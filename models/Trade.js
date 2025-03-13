@@ -6,11 +6,15 @@ const QuestionSchema = new mongoose.Schema({
 
 const LevelSchema = new mongoose.Schema({
   level: { type: String, enum: ["L1", "L2", "L3"], required: true },
-  numQuestions: { type: Number },
+  numQuestions: { type: Number }, // Keep optional
   questions: [QuestionSchema],
-  type: { type: String, required: true }, // MCQ, Subjective, True/False
+  type: { 
+    type: String, 
+    required: function() { return this.numQuestions > 0; } // Only required if numQuestions > 0
+  },
   mcqOptions: { type: Number, required: false }, // Only required for MCQ
 });
+
 
 const TopicSchema = new mongoose.Schema({
   name: { type: String, required: true }, // Ensure topic name is stored

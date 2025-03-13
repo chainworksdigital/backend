@@ -2,8 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
-const path = require("path"); // Import path module
-const { PythonShell } = require("python-shell"); // Import python-shell
+const path = require("path");
+const { PythonShell } = require("python-shell");
 const connectDB = require("./config/db");
 const questionRoutes = require("./routes/questionRoutes");
 
@@ -19,30 +19,39 @@ app.use("/api/questions", questionRoutes);
 // ✅ API Route to Execute Python Script
 app.post("/api/generate-questions", (req, res) => {
   const requestData = req.body; // Get data from frontend request
-  console.log("Request headers:", req.headers);
-  console.log("Request body:", req.body);
-    console.log("🚀 Received Request:", JSON.stringify(req.body, null, 2)); // Log the request data
-  
+  console.log("🚀 Received Request:", JSON.stringify(req.body, null, 2)); // Log the request data
 
+  // ✅ Determine which script to run based on aiModelPurpose
+  let scriptFile = "script.py"; // Default to script.py
+  if (requestData.aiModelPurpose === "Internal NIMI Model") {
+    scriptFile = "script1.py"; // Use script1.py for internal model
+  }
+
+  // ✅ Define options for PythonShell
   let options = {
-    mode: "text",
-    pythonPath: "python3",
-    scriptPath: path.join(__dirname, "scripts"),
-    args: [JSON.stringify(requestData)],
+    mode: "json", // Expect JSON output
+    pythonPath: "python3", // Ensure Python 3 is installed
+    scriptPath: path.join(__dirname, "scripts"), // Path to scripts directory
+    args: [JSON.stringify(requestData)], // Pass request data as argument
   };
 
-  let pyshell = new PythonShell("script.py", options);
+  console.log(`📌 Running Python Script: ${scriptFile}`); // Log selected script
 
-  let outputData = ""; // Store Python output
+  let pyshell = new PythonShell(scriptFile, options);
 
+  let outputData = [];
+
+  // Capture JSON output from Python
   pyshell.on("message", function (message) {
-    outputData += message;
+    outputData.push(message);
   });
 
+  // Handle Python script errors
   pyshell.on("stderr", function (stderr) {
     console.error("⚠️ Python STDERR:", stderr);
   });
 
+  // Send response after Python script execution
   pyshell.end(function (err) {
     if (err) {
       console.error("❌ Python execution error:", err);
@@ -50,8 +59,7 @@ app.post("/api/generate-questions", (req, res) => {
     }
 
     try {
-      const parsedOutput = JSON.parse(outputData);
-      res.json(parsedOutput);
+      res.json(outputData[0]); // ✅ Send JSON response to frontend
     } catch (parseError) {
       console.error("❌ Error parsing Python output:", parseError);
       res.status(500).json({ error: "Invalid response from Python script" });

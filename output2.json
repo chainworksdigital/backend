@@ -1,79 +1,38 @@
 {
     "questions_and_answers": [
         {
-            "question": "True or False: The severity of an electric shock is determined solely by the length of time of contact with the electric supply.",
+            "question": "A person has been electrocuted and is not responding. The immediate steps to be taken are:",
             "options": [
-                "A. True",
-                "B. False"
+                "A. Apply pressure on the wound and call for assistance.",
+                "B. Cut off the power source before attempting any first aid.",
+                "C. Wrap the injured area with tubing, bakelite paper, or a tube (as shown in Fig 5).",
+                "D. Massage the heart to restore circulation."
             ],
-            "correct_answer": "B. False",
-            "difficulty_level": "Medium"
+            "correct_answer": "B. Cut off the power source before attempting any first aid.",
+            "difficulty_level": "Easy",
+            "type": "mcq"
         },
         {
-            "question": "True or False: If a person is unconscious but breathing, you should place them in the recovery position and loosen their clothing.",
+            "question": "When providing first aid for an electric shock, it is important to avoid contact with:",
+            "options": [
+                "A. The victim's clothing.",
+                "B. The victim's heart.",
+                "C. Insulating footwear or dry footwear.",
+                "D. Wet surfaces."
+            ],
+            "correct_answer": "D. Wet surfaces.",
+            "difficulty_level": "Easy",
+            "type": "mcq"
+        },
+        {
+            "question": "In case of an electrical injury, you should immediately disconnect the contact without delaying the time of contact, as stated in the given context.",
             "options": [
                 "A. True",
                 "B. False"
             ],
             "correct_answer": "A. True",
-            "difficulty_level": "Medium"
-        },
-        {
-            "question": "True or False: It is safe to give an unconscious person something to eat or drink if they are not breathing.",
-            "options": [
-                "A. True",
-                "B. False"
-            ],
-            "correct_answer": "B. False",
-            "difficulty_level": "Medium"
-        },
-        {
-            "question": "True or False: For severe bleeding, the best immediate first aid measure is to apply pressure directly on the wound.",
-            "options": [
-                "A. True",
-                "B. False"
-            ],
-            "correct_answer": "A. True",
-            "difficulty_level": "Medium"
-        },
-        {
-            "question": "True or False: Eye injuries caused by metal chips should be treated with eye drops before seeking medical attention.",
-            "options": [
-                "A. True",
-                "B. False"
-            ],
-            "correct_answer": "B. False",
-            "difficulty_level": "Medium"
-        },
-        {
-            "question": "**Question:** Describe the steps to take when providing first aid to a person who has suffered an electric shock and is still in contact with the live conductor.",
-            "options": null,
-            "correct_answer": "** First, do not touch the victim with bare hands while they are still in contact with the live conductor. If possible, switch off the power supply to break the contact. If that is not feasible, use dry non-conducting materials (like a wooden bar, rope, or any dry article of clothing) to safely remove the victim from the live conductor. Ensure you are standing on insulating material (like dry wood or rubber) to avoid electric shock yourself. Once the victim is free, check their breathing and pulse, and if they are unconscious but breathing, place them in the recovery position and call for medical assistance.",
-            "difficulty_level": "Hard"
-        },
-        {
-            "question": "**Question:** Explain the immediate first aid measures for a person experiencing severe bleeding from a large wound.",
-            "options": null,
-            "correct_answer": "** The immediate first aid measures for severe bleeding include making the patient lie down and rest to prevent shock. If possible, raise the injured part above the level of the body to reduce blood flow to the area. Apply direct pressure on the wound to control the bleeding, squeezing the sides of the wound together if necessary. Call for professional medical assistance. Once the bleeding has stopped, cover the wound with a clean dressing and secure it with a bandage. If the bleeding is very severe, apply more than one dressing without removing the initial one.",
-            "difficulty_level": "Hard"
-        },
-        {
-            "question": "**Question:** What are the critical considerations when treating a burn caused by direct flame or chemical, and how should one proceed if a large area of the body is affected?",
-            "options": null,
-            "correct_answer": "** When treating burns caused by direct flame or chemical, it is crucial to exclude air from the burn area to relieve pain. For large burns, do not apply any treatment other than covering the area with water, clean paper, or a clean shirt to cool the burn and protect it from air exposure. Avoid applying ointments or creams. If the burn is extensive, seek professional medical help immediately, as large burns can lead to serious complications.",
-            "difficulty_level": "Hard"
-        },
-        {
-            "question": "**Question:** Discuss the appropriate first aid response for an eye injury caused by hot flying particles.",
-            "options": null,
-            "correct_answer": "** For an eye injury caused by hot flying particles, do not rub the eye, as this can cause further damage. Instead, flush the eye gently with clean water or saline solution to remove any foreign particles. If irritation persists, mild eye drops may be used, applying 2 to 3 drops several times a day. However, if a metal chip or slag particle has entered the eye, it is critical to take the injured person to an eye doctor immediately for professional treatment. Do not apply any eye drops or ointments without consulting a medical professional.",
-            "difficulty_level": "Hard"
-        },
-        {
-            "question": "**Question:** Analyze the factors that contribute to the severity of an electric shock and how they can affect the first aid response.",
-            "options": null,
-            "correct_answer": "** The severity of an electric shock is influenced by several factors, including the level of current passing through the body, the duration of contact, the age of the person, whether they are wearing insulating footwear, weather conditions, and the wetness of the floor. Higher current levels can lead to severe pain, muscle contractions, and potentially fatal heart fibrillation. These factors necessitate a prompt and careful first aid response, including immediate disconnection from the power source, monitoring of the victim's breathing and pulse, and ensuring that the victim is kept warm and comfortable while waiting for professional medical assistance.",
-            "difficulty_level": "Hard"
+            "difficulty_level": "Medium",
+            "type": "true/false"
         }
     ]
 }

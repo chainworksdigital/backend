@@ -59,27 +59,35 @@ router.post("/save", async (req, res) => {
     // ✅ Log Saved Trade Entry
     console.log("✅ Trade Entry Saved in MongoDB:", JSON.stringify(savedEntry, null, 2));
 
-    
+    // ✅ Extract Topic Name
     const topicNameExtracted = savedEntry.modules[0]?.topics[0]?.name;
     console.log(`🟢 Extracted Topic Name: "${topicNameExtracted}"`);
 
-    // ✅ Ensure Topic Name Exists
     if (!topicNameExtracted) {
       console.error("❌ ERROR: Topic name is missing!");
       return res.status(500).json({ error: "Topic name missing from saved entry." });
     }
 
-    console.log("✅ Trade entry saved. Running Python script...");
+    console.log("✅ Trade entry saved. Running appropriate Python script...");
 
-    // ✅ Path to Python Script
-    const pythonScriptPath = path.join(__dirname, "..", "scripts", "script.py");
+    // ✅ Determine Python Script Based on `aiModelPurpose`
+    let scriptFile = "";
+    if (aiModelPurpose === "External API") {
+      scriptFile = "script.py";
+    } else if (aiModelPurpose === "Internal NIMI Model") {
+      scriptFile = "script1.py";
+    }
+
+    // ✅ Resolve Full Path of Python Script
+    const pythonScriptPath = path.join(__dirname, "..", "scripts", scriptFile);
 
     // ✅ Ensure Python Script Exists
     if (!fs.existsSync(pythonScriptPath)) {
       console.error(`❌ ERROR: Python script not found at path: ${pythonScriptPath}`);
-      return res.status(500).json({ error: "Python script not found." });
+      return res.status(500).json({ error: `Python script ${scriptFile} not found.` });
     }
 
+    console.log(`📌 Selected Python Script: ${scriptFile}`);
     console.log(`📌 Python Script Path: ${pythonScriptPath}`);
     console.log("📌 Sending Data to Python Script:", JSON.stringify(savedEntry, null, 2));
 
@@ -96,7 +104,7 @@ router.post("/save", async (req, res) => {
     // ✅ Collect Output from Python
     pythonProcess.stdout.on("data", (data) => {
       pythonOutput += data.toString();
-      console.log(`🟢 Python Output: ${data.toString()}`);
+      //console.log(`🟢 Python Output: ${data.toString()}`);
     });
 
     // ✅ Collect Errors from Python
@@ -122,7 +130,7 @@ router.post("/save", async (req, res) => {
       console.log(`✅ Python script executed successfully! Exit code: ${code}`);
 
       res.status(201).json({
-        message: "Data saved successfully! Python script executed.",
+        message: `Data saved successfully! Python script ${scriptFile} executed.`,
         trade: savedEntry,
         pythonResponse: pythonOutput.trim(),
       });
@@ -152,5 +160,24 @@ router.get("/getTrades", async (req, res) => {
     res.status(500).json({ error: "Server error", details: error.message });
   }
 });
+// ✅ GET Route: Fetch Questions from output2.json
+router.get("/fetchQuestions", (req, res) => {
+  const filePath = path.join(__dirname, "../output2.json"); // Ensure correct path
+
+  fs.readFile(filePath, "utf8", (err, data) => {
+    if (err) {
+      console.error("❌ Error reading output2.json:", err);
+      return res.status(500).json({ error: "Failed to load questions" });
+    }
+    try {
+      const questions = JSON.parse(data); // ✅ Convert JSON string to object
+      res.json(questions); // ✅ Send questions to frontend
+    } catch (parseError) {
+      console.error("❌ JSON Parse Error:", parseError);
+      res.status(500).json({ error: "Invalid JSON format in output2.json" });
+    }
+  });
+});
+
 
 module.exports = router;

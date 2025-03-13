@@ -1,0 +1,20 @@
+[
+    {
+        "question": "1. \"Why is it important to call for help when someone is having a seizure during first aid?\"",
+        "options": [],
+        "correct_answer": "1. \"Why is it important to call for help when someone is having a seizure during first aid?\"",
+        "difficulty_level": "L1"
+    },
+    {
+        "question": "2. \"Can you explain how to check if someone has a broken bone in their arm and what first aid steps to take until medical help arrives?\"",
+        "options": [],
+        "correct_answer": "2. \"Can you explain how to check if someone has a broken bone in their arm and what first aid steps to take until medical help arrives?\"",
+        "difficulty_level": "L1"
+    },
+    {
+        "question": "True or False: The human body contains about 60,000 miles of blood vessels. (Answer: False. The total length of blood vessels in the adult human body is approximately 60,000 miles, but this number only includes arteries and veins; capillaries are not included, and they make up a much larger portion of the vascular network.)",
+        "options": [],
+        "correct_answer": "True or False: The human body contains about 60,000 miles of blood vessels. (Answer: False. The total length of blood vessels in the adult human body is approximately 60,000 miles, but this number only includes arteries and veins; capillaries are not included, and they make up a much larger portion of the vascular network.)",
+        "difficulty_level": "L2"
+    }
+]
