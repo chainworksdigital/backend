@@ -5,10 +5,10 @@
             "options": [
                 "A. Call for help",
                 "B. Touch the person to check their pulse",
-                "C. Switch off the power or remove the plug",
+                "C. Switch off the power or remove the source of electricity",
                 "D. Give them water to drink"
             ],
-            "correct_answer": "C. Switch off the power or remove the plug",
+            "correct_answer": "C. Switch off the power or remove the source of electricity",
             "difficulty_level": "Easy",
             "type": "mcq"
         },
