@@ -17,22 +17,24 @@
             "options": [
                 "A. Make the patient sit up",
                 "B. Apply ice to the wound",
-                "C. Make the patient lie down and rest",
+                "C. Apply pressure on the wound",
                 "D. Leave the patient alone until help arrives"
             ],
-            "correct_answer": "C. Make the patient lie down and rest",
+            "correct_answer": "C. Apply pressure on the wound",
             "difficulty_level": "Easy",
             "type": "mcq"
         },
         {
-            "question": "It is safe to give an unconscious person something to eat or drink if they are breathing normally.",
+            "question": "What is the first step you should take when providing first aid to a person who has suffered an electric shock?",
             "options": [
-                "A. True",
-                "B. False"
+                "A. Start artificial respiration immediately",
+                "B. Call for medical assistance",
+                "C. Disconnect the power source",
+                "D. Apply a cold compress to the burn"
             ],
-            "correct_answer": "B. False",
+            "correct_answer": "C. Disconnect the power source",
             "difficulty_level": "Medium",
-            "type": "true/false"
+            "type": "mcq"
         }
     ]
 }
