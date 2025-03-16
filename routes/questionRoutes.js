@@ -8,32 +8,28 @@ const router = express.Router();
 
 router.post("/save", async (req, res) => {
   try {
-    const { tradeType, moduleName, topicName, noOfQues, levels, dataFormat, aiModelPurpose, questions } = req.body;
-
-    // Log the incoming request body
-    console.log("📌 Incoming Request Body:", JSON.stringify(req.body, null, 2));
+    const { tradeType, moduleName, topicName, noOfQues, levels, dataFormat, aiModelPurpose } = req.body;
 
     // Validate incoming data
-    if (!tradeType || !moduleName || !topicName || !noOfQues || !levels || !Array.isArray(levels) || levels.length === 0 || !aiModelPurpose || !questions) {
-      console.error("❌ ERROR: Missing required fields or invalid levels array");
+    if (!tradeType || !moduleName || !topicName || !noOfQues || !levels || !Array.isArray(levels) || levels.length === 0 || !aiModelPurpose) {
       return res.status(400).json({ error: "Missing required fields or invalid levels array" });
     }
 
-    // Map questions to levels
-    const validLevels = levels.map(level => {
-      // Filter questions for this level
-      const levelQuestions = questions.filter(q => q.difficulty_level === level.level);
+    // Validate AI Model Purpose
+    const validAiModelPurposes = ["External API", "Internal NIMI Model"];
+    if (!validAiModelPurposes.includes(aiModelPurpose)) {
+      return res.status(400).json({ error: "Invalid AI Model Purpose. Allowed values: 'External API' or 'Internal NIMI Model'" });
+    }
 
-      return {
-        level: level.level, // L1, L2, L3
-        numQuestions: level.numQuestions ?? 0, // Default to 0 if not provided
-        type: level.type, // MCQ, True/False, Descriptive
-        mcqOptions: level.type === "MCQ" ? level.mcqOptions : null, // MCQ-specific field
-        questions: levelQuestions, // Assign filtered questions to this level
-      };
-    });
+    // Validate Levels & Set Default numQuestions
+    const validLevels = levels.map(level => ({
+      level: level.level,
+      numQuestions: level.numQuestions ?? 0,
+      type: level.type,
+      mcqOptions: level.type === "MCQ" ? level.mcqOptions : null,
+    }));
 
-    // Save data to MongoDB
+    // Save Data to MongoDB
     const newTradeEntry = new Trade({
       tradeType,
       modules: [
@@ -54,15 +50,73 @@ router.post("/save", async (req, res) => {
 
     const savedEntry = await newTradeEntry.save();
 
-    // Log saved trade entry
-    console.log("✅ Trade Entry Saved in MongoDB:", JSON.stringify(savedEntry, null, 2));
+    // Extract Topic Name
+    const topicNameExtracted = savedEntry.modules[0]?.topics[0]?.name;
+    if (!topicNameExtracted) {
+      return res.status(500).json({ error: "Topic name missing from saved entry." });
+    }
 
-    res.status(201).json({
-      message: "Data saved successfully!",
-      trade: savedEntry,
+    // Determine Python Script Based on `aiModelPurpose`
+    let scriptFile = aiModelPurpose === "External API" ? "script.py" : "script1.py";
+    const pythonScriptPath = path.join(__dirname, "..", "scripts", scriptFile);
+
+    if (!fs.existsSync(pythonScriptPath)) {
+      return res.status(500).json({ error: `Python script ${scriptFile} not found.` });
+    }
+
+    // Spawn Python Process
+    const pythonProcess = spawn("python3", [pythonScriptPath]);
+    pythonProcess.stdin.write(JSON.stringify(savedEntry));
+    pythonProcess.stdin.end();
+
+    let pythonOutput = "";
+    let pythonError = "";
+
+    pythonProcess.stdout.on("data", (data) => {
+      pythonOutput += data.toString();
     });
+
+    pythonProcess.stderr.on("data", (data) => {
+      pythonError += data.toString();
+    });
+
+    pythonProcess.on("close", async (code) => {
+      if (code !== 0) {
+        return res.status(500).json({
+          error: "Python script execution failed.",
+          pythonError: pythonError.trim(),
+        });
+      }
+
+      try {
+        const questionsData = JSON.parse(pythonOutput.trim());
+        console.log("questionsData",questionsData);
+        const questions = questionsData.questions_and_answers;
+        console.log("questionss",questions);
+
+        // Update the savedEntry with the generated questions
+        savedEntry.modules[0].topics[0].levels.forEach((level, index) => {
+          if (level.numQuestions > 0) {
+            level.questions = questions.filter(q => q.difficulty_level === map_difficulty(level.level));
+          }
+        });
+
+        // Save the updated entry back to the database
+        await savedEntry.save();
+
+        res.status(201).json({
+          message: `Data saved successfully! Python script ${scriptFile} executed.`,
+          trade: savedEntry,
+          pythonResponse: pythonOutput.trim(),
+        });
+      } catch (error) {
+        console.error("Error parsing Python output or saving questions:", error);
+        res.status(500).json({ error: "Error parsing Python output or saving questions", details: error.message });
+      }
+    });
+
   } catch (error) {
-    console.error("🔴 Error saving trade:", error);
+    console.error("Error saving trade:", error);
     res.status(500).json({ error: "Server error", details: error.message });
   }
 });
