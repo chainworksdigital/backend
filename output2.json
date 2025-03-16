@@ -5,10 +5,10 @@
             "options": [
                 "A. Call for help",
                 "B. Touch the person to check their pulse",
-                "C. Switch off the power or remove the source of electricity",
+                "C. Switch off the power or remove the source of contact",
                 "D. Give them water to drink"
             ],
-            "correct_answer": "C. Switch off the power or remove the source of electricity",
+            "correct_answer": "C. Switch off the power or remove the source of contact",
             "difficulty_level": "Easy",
             "type": "mcq"
         },
@@ -17,10 +17,10 @@
             "options": [
                 "A. Make the patient sit up",
                 "B. Apply ice to the wound",
-                "C. Apply pressure on the wound",
+                "C. Make the patient lie down and rest",
                 "D. Leave the patient alone until help arrives"
             ],
-            "correct_answer": "C. Apply pressure on the wound",
+            "correct_answer": "C. Make the patient lie down and rest",
             "difficulty_level": "Easy",
             "type": "mcq"
         },
@@ -29,10 +29,10 @@
             "options": [
                 "A. Start artificial respiration immediately",
                 "B. Call for medical assistance",
-                "C. Disconnect the power source",
-                "D. Apply a cold compress to the burn"
+                "C. Disconnect the power source or remove the victim from contact with the live conductor",
+                "D. Apply ice to any burns"
             ],
-            "correct_answer": "C. Disconnect the power source",
+            "correct_answer": "C. Disconnect the power source or remove the victim from contact with the live conductor",
             "difficulty_level": "Medium",
             "type": "mcq"
         }

@@ -9,7 +9,7 @@ const router = express.Router();
 // ✅ POST Route: Save Trade Data & Trigger Python Script
 router.post("/save", async (req, res) => {
   try {
-    const { tradeType, moduleName, topicName, noOfQues, levels, dataFormat, aiModelPurpose, questions } = req.body;
+    const { tradeType, moduleName, topicName, noOfQues, levels, dataFormat, aiModelPurpose } = req.body;
 
     // ✅ Log Incoming Request Data
     console.log("📌 Incoming Trade Data:", JSON.stringify(req.body, null, 2));
@@ -48,7 +48,6 @@ router.post("/save", async (req, res) => {
               format: dataFormat,
               aiModelPurpose,
               levels: validLevels,
-              questions: questions || [], // Store questions in the database (default to empty array if not provided)
             },
           ],
         },
