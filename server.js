@@ -7,6 +7,8 @@ const { PythonShell } = require("python-shell");
 const connectDB = require("./config/db");
 const questionRoutes = require("./routes/questionRoutes");
 
+
+
 dotenv.config();
 connectDB();
 
@@ -15,6 +17,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use("/api/questions", questionRoutes);
+
+
 
 // ✅ API Route to Execute Python Script
 app.post("/api/generate-questions", (req, res) => {

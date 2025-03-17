@@ -11,31 +11,33 @@ router.post("/save", async (req, res) => {
   try {
     const { tradeType, moduleName, topicName, noOfQues, levels, dataFormat, aiModelPurpose } = req.body;
 
-    // ✅ Log Incoming Request Data
     console.log("📌 Incoming Trade Data:", JSON.stringify(req.body, null, 2));
 
-    // ✅ Validate Incoming Data
-    if (!tradeType || !moduleName || !topicName || !noOfQues || !levels || !Array.isArray(levels) || levels.length === 0 || !aiModelPurpose) {
-      console.error("❌ ERROR: Missing required fields or invalid levels array");
+    if (!tradeType || !moduleName || !topicName || !noOfQues || !levels || !Array.isArray(levels) || levels.length === 0) {
       return res.status(400).json({ error: "Missing required fields or invalid levels array" });
     }
 
-    // ✅ Validate AI Model Purpose
-    const validAiModelPurposes = ["External API", "Internal NIMI Model"];
-    if (!validAiModelPurposes.includes(aiModelPurpose)) {
-      console.error("❌ ERROR: Invalid AI Model Purpose");
-      return res.status(400).json({ error: "Invalid AI Model Purpose. Allowed values: 'External API' or 'Internal NIMI Model'" });
+    if (!["External API", "Internal NIMI Model"].includes(aiModelPurpose)) {
+      return res.status(400).json({ error: "Invalid AI Model Purpose. Allowed: 'External API' or 'Internal NIMI Model'" });
     }
 
-    // ✅ Validate Levels & Set Default numQuestions
+    // ✅ Ensure Each Level Has Correct `questions_and_answers` Format
     const validLevels = levels.map(level => ({
-      level: level.level, // L1, L2, L3
-      numQuestions: level.numQuestions ?? 0, // ✅ Default to 0 if not provided
-      type: level.type, // MCQ, True/False, Descriptive
-      mcqOptions: level.type === "MCQ" ? level.mcqOptions : null, // ✅ MCQ-specific field
+      level: level.level,
+      numQuestions: level.numQuestions ?? 0,
+      type: level.type,
+      mcqOptions: level.type === "MCQ" ? level.mcqOptions : null,
+      questions_and_answers: Array.isArray(level.questions_and_answers)
+        ? level.questions_and_answers.map(q => ({
+            question: q.question,
+            options: q.options,
+            correct_answer: q.correct_answer,
+            difficulty_level: q.difficulty_level,
+            type: q.type,
+          }))
+        : [],
     }));
 
-    // ✅ Save Data to MongoDB
     const newTradeEntry = new Trade({
       tradeType,
       modules: [
@@ -55,92 +57,170 @@ router.post("/save", async (req, res) => {
     });
 
     const savedEntry = await newTradeEntry.save();
-
-    // ✅ Log Saved Trade Entry
     console.log("✅ Trade Entry Saved in MongoDB:", JSON.stringify(savedEntry, null, 2));
 
-    // ✅ Extract Topic Name
-    const topicNameExtracted = savedEntry.modules[0]?.topics[0]?.name;
-    console.log(`🟢 Extracted Topic Name: "${topicNameExtracted}"`);
-
-    if (!topicNameExtracted) {
-      console.error("❌ ERROR: Topic name is missing!");
-      return res.status(500).json({ error: "Topic name missing from saved entry." });
-    }
-
-    console.log("✅ Trade entry saved. Running appropriate Python script...");
-
-    // ✅ Determine Python Script Based on `aiModelPurpose`
-    let scriptFile = "";
-    if (aiModelPurpose === "External API") {
-      scriptFile = "script.py";
-    } else if (aiModelPurpose === "Internal NIMI Model") {
-      scriptFile = "script1.py";
-    }
-
-    // ✅ Resolve Full Path of Python Script
+    const scriptFile = aiModelPurpose === "External API" ? "script.py" : "script1.py";
     const pythonScriptPath = path.join(__dirname, "..", "scripts", scriptFile);
 
-    // ✅ Ensure Python Script Exists
     if (!fs.existsSync(pythonScriptPath)) {
-      console.error(`❌ ERROR: Python script not found at path: ${pythonScriptPath}`);
       return res.status(500).json({ error: `Python script ${scriptFile} not found.` });
     }
 
-    console.log(`📌 Selected Python Script: ${scriptFile}`);
-    console.log(`📌 Python Script Path: ${pythonScriptPath}`);
-    console.log("📌 Sending Data to Python Script:", JSON.stringify(savedEntry, null, 2));
+    console.log(`📌 Running: ${scriptFile}`);
 
-    // ✅ Spawn Python Process
     const pythonProcess = spawn("python3", [pythonScriptPath]);
-
-    // ✅ Send JSON Data to Python Script
     pythonProcess.stdin.write(JSON.stringify(savedEntry));
     pythonProcess.stdin.end();
 
     let pythonOutput = "";
     let pythonError = "";
 
-    // ✅ Collect Output from Python
     pythonProcess.stdout.on("data", (data) => {
       pythonOutput += data.toString();
-      //console.log(`🟢 Python Output: ${data.toString()}`);
     });
 
-    // ✅ Collect Errors from Python
     pythonProcess.stderr.on("data", (data) => {
       pythonError += data.toString();
       console.error(`🔴 Python Script Error: ${data.toString()}`);
     });
 
-    // ✅ Handle Python Process Exit
-    pythonProcess.on("close", (code) => {
+    const outputFilePath = path.join(__dirname, "../output2.json");
+
+    pythonProcess.on("close", async (code) => {
       console.log(`📌 Python Process Exit Code: ${code}`);
-      console.log("📌 Final Python Output:", pythonOutput.trim());
-      console.log("📌 Final Python Error:", pythonError.trim());
 
       if (code !== 0) {
-        console.error("❌ Python script execution failed.");
-        return res.status(500).json({
-          error: "Python script execution failed.",
-          pythonError: pythonError.trim(),
-        });
+        return res.status(500).json({ error: "Python script execution failed." });
       }
 
-      console.log(`✅ Python script executed successfully! Exit code: ${code}`);
+      if (!fs.existsSync(outputFilePath)) {
+        return res.status(500).json({ error: "Output file not found." });
+      }
 
-      res.status(201).json({
-        message: `Data saved successfully! Python script ${scriptFile} executed.`,
-        trade: savedEntry,
-        pythonResponse: pythonOutput.trim(),
+      fs.readFile(outputFilePath, "utf8", async (err, data) => {
+        if (err) {
+          return res.status(500).json({ error: "Failed to read output2.json" });
+        }
+
+        console.log("📌 Raw output2.json content:", data);
+
+        try {
+          const parsedData = JSON.parse(data);
+          if (!Array.isArray(parsedData.questions_and_answers) || parsedData.questions_and_answers.length === 0) {
+            return res.status(500).json({ error: "No questions generated." });
+          }
+
+          console.log("✅ Parsed Questions:", JSON.stringify(parsedData.questions_and_answers, null, 2));
+
+          const trade = await Trade.findOne({ tradeType, "modules.name": moduleName });
+
+          if (!trade) return res.status(404).json({ error: "Trade or Module not found." });
+          
+          const moduleIndex = trade.modules.findIndex(m => m.name === moduleName);
+          const topicIndex = trade.modules[moduleIndex]?.topics.findIndex(t => t.name === topicName);
+          
+          if (topicIndex === -1) return res.status(404).json({ error: "Topic not found." });
+          
+          // ✅ Map difficulty levels to L1, L2, L3
+          const levelWiseQuestions = {};
+
+          parsedData.questions_and_answers.forEach((qa) => {
+              const level = qa.difficulty_level === "Easy" ? "L1" :
+                            qa.difficulty_level === "Medium" ? "L2" :
+                            qa.difficulty_level === "Hard" ? "L3" : null;
+
+              if (!level) return; 
+
+              if (!levelWiseQuestions[level]) {
+                  levelWiseQuestions[level] = [];
+              }
+              levelWiseQuestions[level].push(qa);
+          });
+
+          console.log("✅ Grouped Questions by Level:", levelWiseQuestions);
+
+          const updateFields = {};
+
+          Object.keys(levelWiseQuestions).forEach((level) => {
+              const levelIndex = trade.modules[moduleIndex].topics[topicIndex].levels.findIndex(
+                  (l) => l.level === level
+              );
+
+              if (levelIndex === -1) {
+                  console.log(`⏩ Skipping Level: ${level} (not found in DB)`);
+                  return;
+              }
+
+              const updatePath = `modules.${moduleIndex}.topics.${topicIndex}.levels.${levelIndex}.questions_and_answers`;
+              updateFields[updatePath] = levelWiseQuestions[level];
+          });
+
+          if (Object.keys(updateFields).length === 0) {
+              return res.status(400).json({ error: "No valid levels to update." });
+          }
+
+          const updatedTrade = await Trade.findOneAndUpdate(
+              { _id: trade._id },
+              { $set: updateFields },
+              { new: true }
+          );
+
+          if (!updatedTrade) return res.status(500).json({ error: "Trade update failed." });
+
+          console.log("✅ Questions stored successfully!", updatedTrade);
+          
+          res.status(201).json({ message: "Data saved and questions added successfully!", trade: updatedTrade });
+
+        } catch (error) {
+          res.status(500).json({ error: "Failed to parse/store questions.", details: error.message });
+        }
       });
     });
 
   } catch (error) {
-    console.error("🔴 Error saving trade:", error);
     res.status(500).json({ error: "Server error", details: error.message });
   }
 });
+// ✅ POST Route: Add Additional Question to a Topic
+router.post("/addQuestion", async (req, res) => {
+  try {
+    const { tradeId, moduleName, topicName, newQuestion } = req.body;
+
+    if (!tradeId || !moduleName || !topicName || !newQuestion) {
+      return res.status(400).json({ error: "Missing required fields." });
+    }
+
+    const trade = await Trade.findById(tradeId);
+    if (!trade) {
+      return res.status(404).json({ error: "Trade not found." });
+    }
+
+    // ✅ Find Module & Topic
+    const module = trade.modules.find(m => m.name === moduleName);
+    if (!module) {
+      return res.status(404).json({ error: "Module not found." });
+    }
+
+    const topic = module.topics.find(t => t.name === topicName);
+    if (!topic) {
+      return res.status(404).json({ error: "Topic not found." });
+    }
+
+    // ✅ Add Question
+    topic.questions = topic.questions || []; // Ensure the array exists
+    topic.questions.push(newQuestion);
+
+    await trade.save();
+    console.log("✅ New question added:", newQuestion);
+
+    res.status(200).json({ message: "Question added successfully.", trade });
+
+  } catch (error) {
+    console.error("🔴 Error adding question:", error);
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
+});
+
 
 // ✅ GET Route: Fetch All Trades
 router.get("/getTrades", async (req, res) => {
@@ -160,9 +240,10 @@ router.get("/getTrades", async (req, res) => {
     res.status(500).json({ error: "Server error", details: error.message });
   }
 });
+
 // ✅ GET Route: Fetch Questions from output2.json
 router.get("/fetchQuestions", (req, res) => {
-  const filePath = path.join(__dirname, "../output2.json"); // Ensure correct path
+  const filePath = path.join(__dirname, "../output2.json");
 
   fs.readFile(filePath, "utf8", (err, data) => {
     if (err) {
@@ -170,14 +251,13 @@ router.get("/fetchQuestions", (req, res) => {
       return res.status(500).json({ error: "Failed to load questions" });
     }
     try {
-      const questions = JSON.parse(data); // ✅ Convert JSON string to object
-      res.json(questions); // ✅ Send questions to frontend
+      const questions = JSON.parse(data);
+      res.json(questions);
     } catch (parseError) {
       console.error("❌ JSON Parse Error:", parseError);
       res.status(500).json({ error: "Invalid JSON format in output2.json" });
     }
   });
 });
-
 
 module.exports = router;

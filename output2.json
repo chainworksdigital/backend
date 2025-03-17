@@ -1,36 +1,36 @@
 {
     "questions_and_answers": [
         {
-            "question": "A person has been electrocuted and is not responding. The immediate steps to be taken are:",
+            "question": "What should you do first if someone is experiencing an electric shock?",
             "options": [
-                "A. Apply pressure on the wound and call for assistance.",
-                "B. Cut off the power source before attempting any first aid.",
-                "C. Wrap the injured area with tubing, bakelite paper, or a tube (as shown in Fig 5).",
-                "D. Massage the heart to restore circulation."
+                "A. Call for help",
+                "B. Touch the person to check their pulse",
+                "C. Disconnect the power source",
+                "D. Give them water to drink"
             ],
-            "correct_answer": "B. Cut off the power source before attempting any first aid.",
+            "correct_answer": "C. Disconnect the power source",
             "difficulty_level": "Easy",
             "type": "mcq"
         },
         {
-            "question": "When providing first aid for an electric shock, it is important to avoid contact with:",
+            "question": "In the case of severe bleeding, what is the immediate action you should take?",
             "options": [
-                "A. The victim's clothing.",
-                "B. The victim's heart.",
-                "C. Insulating footwear or dry footwear.",
-                "D. Wet surfaces."
+                "A. Make the patient sit up",
+                "B. Apply ice to the wound",
+                "C. Make the patient lie down and rest",
+                "D. Leave the patient alone until help arrives"
             ],
-            "correct_answer": "D. Wet surfaces.",
+            "correct_answer": "C. Make the patient lie down and rest",
             "difficulty_level": "Easy",
             "type": "mcq"
         },
         {
-            "question": "In case of an electrical injury, you should immediately disconnect the contact without delaying the time of contact, as stated in the given context.",
+            "question": "It is safe to give an unconscious person something to eat or drink if they are breathing normally.",
             "options": [
                 "A. True",
                 "B. False"
             ],
-            "correct_answer": "A. True",
+            "correct_answer": "B. False",
             "difficulty_level": "Medium",
             "type": "true/false"
         }
