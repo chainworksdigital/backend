@@ -21,7 +21,7 @@ router.post("/save", async (req, res) => {
       return res.status(400).json({ error: "Invalid AI Model Purpose. Allowed: 'External API' or 'Internal NIMI Model'" });
     }
 
-    // ✅ Ensure Each Level Has Correct `questions_and_answers` Format
+    // ✅ Ensure Each Level Has Correct `questions` Format
     const validLevels = levels.map(level => ({
       level: level.level,
       numQuestions: level.numQuestions ?? 0,

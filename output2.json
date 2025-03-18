@@ -3,6 +3,7 @@
         {
             "question": "If you encounter a victim of electric shock, what is the first action you should take?",
             "options": [
+<<<<<<< HEAD
                 "A. Begin CPR immediately",
                 "B. Switch off the current or remove the victim from contact with the live conductor using dry non-conducting materials",
                 "C. Immediately apply first aid to any burns the victim may have",
@@ -10,10 +11,26 @@
                 "E. Move the victim to a more comfortable position"
             ],
             "correct_answer": "B. Switch off the current or remove the victim from contact with the live conductor using dry non-conducting materials",
+=======
+                "A. Call for help",
+                "B. Touch the person to check their pulse",
+<<<<<<< HEAD
+                "C. Switch off the power or remove the source of contact",
+                "D. Give them water to drink"
+            ],
+            "correct_answer": "C. Switch off the power or remove the source of contact",
+=======
+                "C. Disconnect the power source",
+                "D. Give them water to drink"
+            ],
+            "correct_answer": "C. Disconnect the power source",
+>>>>>>> 8b74bc2 (Fix: db storing questions)
+>>>>>>> 66b4167 (mongo error fix)
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
+<<<<<<< HEAD
             "question": "What is the recommended immediate first aid measure for severe bleeding?",
             "options": [
                 "A. Sew the wound closed",
@@ -23,10 +40,21 @@
                 "E. Cleanse the wound with strong alcohol"
             ],
             "correct_answer": "D. Apply pressure on the wound",
+=======
+            "question": "In the case of severe bleeding, what is the immediate action you should take?",
+            "options": [
+                "A. Make the patient sit up",
+                "B. Apply ice to the wound",
+                "C. Make the patient lie down and rest",
+                "D. Leave the patient alone until help arrives"
+            ],
+            "correct_answer": "C. Make the patient lie down and rest",
+>>>>>>> 66b4167 (mongo error fix)
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
+<<<<<<< HEAD
             "question": "What should be your immediate course of action if someone experiences an electric shock?",
             "options": [
                 "A. Apply first aid to the burns right away.",
@@ -36,6 +64,24 @@
                 "E. Immediately start treating for shock."
             ],
             "correct_answer": "D. Remove the victim from the live conductor, if possible, using dry non-conducting materials.",
+=======
+<<<<<<< HEAD
+            "question": "What is the first step you should take when providing first aid to a person who has suffered an electric shock?",
+=======
+            "question": "It is safe to give an unconscious person something to eat or drink if they are breathing normally.",
+>>>>>>> 8b74bc2 (Fix: db storing questions)
+            "options": [
+                "A. Start artificial respiration immediately",
+                "B. Call for medical assistance",
+                "C. Disconnect the power source or remove the victim from contact with the live conductor",
+                "D. Apply ice to any burns"
+            ],
+<<<<<<< HEAD
+            "correct_answer": "C. Disconnect the power source or remove the victim from contact with the live conductor",
+=======
+            "correct_answer": "B. False",
+>>>>>>> 8b74bc2 (Fix: db storing questions)
+>>>>>>> 66b4167 (mongo error fix)
             "difficulty_level": "Medium",
             "type": "MCQ"
         }
