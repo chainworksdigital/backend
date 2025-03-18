@@ -1,40 +1,58 @@
 {
     "questions_and_answers": [
         {
-            "question": "What should you do first if someone is experiencing an electric shock?",
+            "question": "What should you do first if someone receives an electric shock?",
             "options": [
+<<<<<<< HEAD
                 "A. Call for help",
                 "B. Touch the person to check their pulse",
                 "C. Disconnect the power source",
                 "D. Give them water to drink"
             ],
             "correct_answer": "C. Disconnect the power source",
-            "difficulty_level": "Easy",
-            "type": "mcq"
-        },
-        {
-            "question": "In the case of severe bleeding, what is the immediate action you should take?",
-            "options": [
-                "A. Make the patient sit up",
-                "B. Apply ice to the wound",
-                "C. Make the patient lie down and rest",
-                "D. Leave the patient alone until help arrives"
+=======
+                "A. Give them water to drink",
+                "B. Immediately touch them to see if they are okay",
+                "C. Use a wooden bar, rope, or any dry non-conducting material to remove them from the live conductor",
+                "D. Stand on a wet floor to conduct the electricity away from them"
             ],
-            "correct_answer": "C. Make the patient lie down and rest",
+            "correct_answer": "C. Use a wooden bar, rope, or any dry non-conducting material to remove them from the live conductor",
+>>>>>>> 6e47777 (backend code)
             "difficulty_level": "Easy",
-            "type": "mcq"
+            "type": "MCQ"
         },
         {
+            "question": "What should you do if someone has an eye injury due to a metal chip or slag particles entering the eye?",
+            "options": [
+                "A. Rub the eye to remove the particle",
+                "B. Apply a mild eye drop immediately",
+                "C. Take the injured person to an eye doctor immediately",
+                "D. Apply an ointment to soothe the pain"
+            ],
+            "correct_answer": "C. Take the injured person to an eye doctor immediately",
+            "difficulty_level": "Easy",
+            "type": "MCQ"
+        },
+        {
+<<<<<<< HEAD
             "question": "It is safe to give an unconscious person something to eat or drink if they are breathing normally.",
+=======
+            "question": "What is the first step in providing first aid for an electric shock?",
+>>>>>>> 6e47777 (backend code)
             "options": [
-                "A. Start artificial respiration immediately",
-                "B. Call for medical assistance",
-                "C. Disconnect the power source or remove the victim from contact with the live conductor",
-                "D. Apply ice to any burns"
+                "A. Immediately touch the victim to check their pulse",
+                "B. Place the victim in the recovery position",
+                "C. Switch off the current or remove the victim from the live conductor with dry, non-conducting materials",
+                "D. Apply a clean, sterile dressing to electric burns",
+                "E. Send the random element 8713 for help"
             ],
+<<<<<<< HEAD
             "correct_answer": "B. False",
+=======
+            "correct_answer": "C. Switch off the current or remove the victim from the live conductor with dry, non-conducting materials",
+>>>>>>> 6e47777 (backend code)
             "difficulty_level": "Medium",
-            "type": "mcq"
+            "type": "MCQ"
         }
     ]
 }

@@ -1,4 +1,4 @@
- const express = require("express");
+const express = require("express");
 const Trade = require("../models/Trade"); // Trade model for MongoDB
 const NimiQuestion = require("../models/NimiQuestion"); // NimiQuestion model for MongoDB
 const { spawn } = require("child_process"); // To run Python script
@@ -7,7 +7,6 @@ const fs = require("fs"); // File system for checking script existence
 
 const router = express.Router();
 
-// ✅ POST Route: Save Trade Data & Trigger Python Script
 router.post("/save", async (req, res) => {
   try {
     const { tradeType, moduleName, topicName, noOfQues, levels, dataFormat, aiModelPurpose } = req.body;
@@ -28,8 +27,8 @@ router.post("/save", async (req, res) => {
       numQuestions: level.numQuestions ?? 0,
       type: level.type,
       mcqOptions: level.type === "MCQ" ? level.mcqOptions : null,
-      questions_and_answers: Array.isArray(level.questions_and_answers)
-        ? level.questions_and_answers.map(q => ({
+      questions: Array.isArray(level.questions) // Use `questions` instead of `questions_and_answers`
+        ? level.questions.map(q => ({
             question: q.question,
             options: q.options,
             correct_answer: q.correct_answer,
@@ -57,8 +56,16 @@ router.post("/save", async (req, res) => {
       ],
     });
 
-    const savedEntry = await newTradeEntry.save();
-    console.log("✅ Trade Entry Saved in MongoDB:", JSON.stringify(savedEntry, null, 2));
+    console.log("📌 New Trade Entry to be Saved:", JSON.stringify(newTradeEntry, null, 2));
+
+    let savedEntry;
+    try {
+      savedEntry = await newTradeEntry.save();
+      console.log("✅ Trade Entry Saved in MongoDB:", JSON.stringify(savedEntry, null, 2));
+    } catch (error) {
+      console.error("🔴 Error saving trade entry:", error.message);
+      return res.status(500).json({ error: "Failed to save trade entry.", details: error.message });
+    }
 
     const scriptFile = aiModelPurpose === "External API" ? "script.py" : "script1.py";
     const pythonScriptPath = path.join(__dirname, "..", "scripts", scriptFile);
@@ -113,9 +120,11 @@ router.post("/save", async (req, res) => {
 
           console.log("✅ Parsed Questions:", JSON.stringify(parsedData.questions_and_answers, null, 2));
 
-          const trade = await Trade.findOne({ tradeType, "modules.name": moduleName });
+          // Fetch the latest trade entry by its ID
+          const trade = await Trade.findById(savedEntry._id);
+          console.log(trade);
 
-          if (!trade) return res.status(404).json({ error: "Trade or Module not found." });
+          if (!trade) return res.status(404).json({ error: "Trade not found." });
           
           const moduleIndex = trade.modules.findIndex(m => m.name === moduleName);
           const topicIndex = trade.modules[moduleIndex]?.topics.findIndex(t => t.name === topicName);
@@ -152,9 +161,12 @@ router.post("/save", async (req, res) => {
                   return;
               }
 
-              const updatePath = `modules.${moduleIndex}.topics.${topicIndex}.levels.${levelIndex}.questions_and_answers`;
-              updateFields[updatePath] = levelWiseQuestions[level];
+              // Use the correct field name: `questions` instead of `questions_and_answers`
+              const updatePath = `modules.${moduleIndex}.topics.${topicIndex}.levels.${levelIndex}.questions`;
+              updateFields[updatePath] = { $each: levelWiseQuestions[level] }; // Use $each with $push
           });
+
+          console.log("📌 Update Fields:", updateFields);
 
           if (Object.keys(updateFields).length === 0) {
               return res.status(400).json({ error: "No valid levels to update." });
@@ -162,13 +174,15 @@ router.post("/save", async (req, res) => {
 
           const updatedTrade = await Trade.findOneAndUpdate(
               { _id: trade._id },
-              { $set: updateFields },
+              { $push: updateFields }, // Use $push to append to the array
               { new: true }
           );
 
+          console.log("📌 Updated Trade Entry:", updatedTrade);
+
           if (!updatedTrade) return res.status(500).json({ error: "Trade update failed." });
 
-          console.log("✅ Questions stored successfully!", updatedTrade);
+          console.log("✅ Updated Trade Entry:", JSON.stringify(updatedTrade, null, 2));
           
           res.status(201).json({ message: "Data saved and questions added successfully!", trade: updatedTrade });
 
@@ -302,7 +316,6 @@ router.post("/saveNimiQuestion", async (req, res) => {
     });
   }
 });
-
 
 
 module.exports = router;
