@@ -23,7 +23,7 @@ const LevelSchema = new mongoose.Schema({
 
 const TopicSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  totalQuestions: { type: Number, required: true },
+//   totalQuestions: { type: Number, required: true },
   format: { type: String, enum: ["Text", "Image"]},
   aiModelPurpose: { type: String, enum: ["External API", "Internal NIMI Model"]}, 
   levels: [LevelSchema],
@@ -35,10 +35,10 @@ const ModuleSchema = new mongoose.Schema({
   topics: [TopicSchema],
 });
 
-// Define the Trade Schema
-const TradeSchema = new mongoose.Schema({
+// Define the Nimi Question Schema
+const NimiQuestionSchema = new mongoose.Schema({
   tradeType: { type: String, required: true, unique: false },
   modules: [ModuleSchema],
 });
 
-module.exports = mongoose.model("Trade", TradeSchema);
+module.exports = mongoose.model("NimiQuestion", NimiQuestionSchema);

@@ -5,10 +5,10 @@
             "options": [
                 "A. Call for help",
                 "B. Touch the person to check their pulse",
-                "C. Switch off the power or remove the source of contact",
+                "C. Disconnect the power source",
                 "D. Give them water to drink"
             ],
-            "correct_answer": "C. Switch off the power or remove the source of contact",
+            "correct_answer": "C. Disconnect the power source",
             "difficulty_level": "Easy",
             "type": "mcq"
         },
@@ -25,14 +25,14 @@
             "type": "mcq"
         },
         {
-            "question": "What is the first step you should take when providing first aid to a person who has suffered an electric shock?",
+            "question": "It is safe to give an unconscious person something to eat or drink if they are breathing normally.",
             "options": [
                 "A. Start artificial respiration immediately",
                 "B. Call for medical assistance",
                 "C. Disconnect the power source or remove the victim from contact with the live conductor",
                 "D. Apply ice to any burns"
             ],
-            "correct_answer": "C. Disconnect the power source or remove the victim from contact with the live conductor",
+            "correct_answer": "B. False",
             "difficulty_level": "Medium",
             "type": "mcq"
         }
