@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
 from langchain_community.vectorstores import Chroma
-from langchain_core.documents import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.chains.retrieval_qa.base import RetrievalQA
 
@@ -173,6 +172,6 @@ def main():
 
     except Exception as e:
         print(json.dumps({"error": str(e)}))
-
+        
 if __name__ == "__main__":
     main()

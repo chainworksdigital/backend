@@ -277,27 +277,43 @@ router.get("/fetchQuestions", (req, res) => {
 
 router.post("/saveNimiQuestion", async (req, res) => {
   try {
-    const { tradeType, modules, selectedQuestions } = req.body;
+    const { tradeType, modules, aiModelPurpose } = req.body;
 
-    // Loop through each module, topic, and level to ensure questions_and_answers is an array
-    modules.forEach((module) => {
-      module.topics.forEach((topic) => {
-        topic.levels.forEach((level) => {
-          // Check if questions_and_answers is an array, if not, initialize it as an empty array
-          if (!Array.isArray(level.questions_and_answers)) {
-            level.questions_and_answers = [];
-          }
+    // Validate the incoming data
+    if (!tradeType || !modules || !Array.isArray(modules) || !aiModelPurpose) {
+      return res.status(400).json({ error: "Invalid request body. Missing required fields." });
+    }
 
-          // Add the selected questions to the respective level's questions_and_answers
-          level.questions_and_answers.push(...selectedQuestions); // Ensure selected questions are properly formatted
-        });
-      });
+    // Loop through each module, topic, and level to ensure questions are properly nested
+    const updatedModules = modules.map((module) => {
+      return {
+        ...module,
+        topics: module.topics.map((topic) => {
+          return {
+            ...topic,
+            levels: topic.levels.map((level) => {
+              // Initialize the questions array if it doesn't exist
+              if (!Array.isArray(level.questions)) {
+                level.questions = [];
+              }
+
+              // Add the selected questions to the respective level's questions array
+              if (level.level === req.body.level) { // Only add to the specified level
+                level.questions.push(...req.body.questions);
+              }
+
+              return level;
+            }),
+          };
+        }),
+      };
     });
 
-    // Create a new NimiQuestion document based on the incoming request body
+    // Create a new NimiQuestion document
     const nimiQuestion = new NimiQuestion({
       tradeType,
-      modules,
+      modules: updatedModules,
+      aiModelPurpose, // Include aiModelPurpose in the NimiQuestion document
     });
 
     // Save the document to the database
@@ -316,6 +332,30 @@ router.post("/saveNimiQuestion", async (req, res) => {
     });
   }
 });
+
+// ✅ GET Route: Fetch All NIMI Questions
+router.get("/getNimiQuestions", async (req, res) => {
+  try {
+    const nimiQuestions = await NimiQuestion.find();
+
+    console.log("📌 Fetching all NIMI question entries from DB...");
+    console.log("🔹 Data from Database:", JSON.stringify(nimiQuestions, null, 2)); // Pretty print DB data
+
+    if (!nimiQuestions || nimiQuestions.length === 0) {
+      console.warn("⚠️ No NIMI question data found.");
+      return res.status(404).json({ message: "No NIMI question data found." });
+    }
+
+    console.log("📤 Sending data to frontend...");
+    console.log("🔹 Data sent to frontend:", JSON.stringify(nimiQuestions, null, 2)); // Log response data
+
+    res.status(200).json(nimiQuestions);
+  } catch (error) {
+    console.error("🔴 Error fetching NIMI questions:", error);
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
+});
+
 
 
 module.exports = router;

@@ -1,56 +1,41 @@
 {
     "questions_and_answers": [
         {
-            "question": "What should you do first if someone receives an electric shock?",
+            "question": "If you encounter a victim of electric shock, what is the first action you should take?",
             "options": [
-<<<<<<< HEAD
-                "A. Call for help",
-                "B. Touch the person to check their pulse",
-                "C. Disconnect the power source",
-                "D. Give them water to drink"
+                "A. Begin CPR immediately",
+                "B. Switch off the current or remove the victim from contact with the live conductor using dry non-conducting materials",
+                "C. Immediately apply first aid to any burns the victim may have",
+                "D. Give the victim water to drink",
+                "E. Move the victim to a more comfortable position"
             ],
-            "correct_answer": "C. Disconnect the power source",
-=======
-                "A. Give them water to drink",
-                "B. Immediately touch them to see if they are okay",
-                "C. Use a wooden bar, rope, or any dry non-conducting material to remove them from the live conductor",
-                "D. Stand on a wet floor to conduct the electricity away from them"
-            ],
-            "correct_answer": "C. Use a wooden bar, rope, or any dry non-conducting material to remove them from the live conductor",
->>>>>>> 6e47777 (backend code)
+            "correct_answer": "B. Switch off the current or remove the victim from contact with the live conductor using dry non-conducting materials",
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
-            "question": "What should you do if someone has an eye injury due to a metal chip or slag particles entering the eye?",
+            "question": "What is the recommended immediate first aid measure for severe bleeding?",
             "options": [
-                "A. Rub the eye to remove the particle",
-                "B. Apply a mild eye drop immediately",
-                "C. Take the injured person to an eye doctor immediately",
-                "D. Apply an ointment to soothe the pain"
+                "A. Sew the wound closed",
+                "B. Use a hot iron to cauterize the wound",
+                "C. Apply a clean dressing without applying pressure",
+                "D. Apply pressure on the wound",
+                "E. Cleanse the wound with strong alcohol"
             ],
-            "correct_answer": "C. Take the injured person to an eye doctor immediately",
+            "correct_answer": "D. Apply pressure on the wound",
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
-<<<<<<< HEAD
-            "question": "It is safe to give an unconscious person something to eat or drink if they are breathing normally.",
-=======
-            "question": "What is the first step in providing first aid for an electric shock?",
->>>>>>> 6e47777 (backend code)
+            "question": "What should be your immediate course of action if someone experiences an electric shock?",
             "options": [
-                "A. Immediately touch the victim to check their pulse",
-                "B. Place the victim in the recovery position",
-                "C. Switch off the current or remove the victim from the live conductor with dry, non-conducting materials",
-                "D. Apply a clean, sterile dressing to electric burns",
-                "E. Send the random element 8713 for help"
+                "A. Apply first aid to the burns right away.",
+                "B. Push the person away from the electrical current.",
+                "C. Leave the scene to search for professional help.",
+                "D. Remove the victim from the live conductor, if possible, using dry non-conducting materials.",
+                "E. Immediately start treating for shock."
             ],
-<<<<<<< HEAD
-            "correct_answer": "B. False",
-=======
-            "correct_answer": "C. Switch off the current or remove the victim from the live conductor with dry, non-conducting materials",
->>>>>>> 6e47777 (backend code)
+            "correct_answer": "D. Remove the victim from the live conductor, if possible, using dry non-conducting materials.",
             "difficulty_level": "Medium",
             "type": "MCQ"
         }
