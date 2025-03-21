@@ -1,87 +1,39 @@
 {
     "questions_and_answers": [
         {
-            "question": "If you encounter a victim of electric shock, what is the first action you should take?",
+            "question": "What immediate action should be taken for severe bleeding during first aid?",
             "options": [
-<<<<<<< HEAD
-                "A. Begin CPR immediately",
-                "B. Switch off the current or remove the victim from contact with the live conductor using dry non-conducting materials",
-                "C. Immediately apply first aid to any burns the victim may have",
-                "D. Give the victim water to drink",
-                "E. Move the victim to a more comfortable position"
+                "A. Make the patient stand and maintain balance",
+                "B. Apply fire to the wound",
+                "C. Raise the injured part above the level of the body and apply pressure on the wound",
+                "D. Prick the wound with a needle"
             ],
-            "correct_answer": "B. Switch off the current or remove the victim from contact with the live conductor using dry non-conducting materials",
-=======
-                "A. Call for help",
-                "B. Touch the person to check their pulse",
-<<<<<<< HEAD
-                "C. Switch off the power or remove the source of contact",
-                "D. Give them water to drink"
-            ],
-            "correct_answer": "C. Switch off the power or remove the source of contact",
-=======
-                "C. Disconnect the power source",
-                "D. Give them water to drink"
-            ],
-            "correct_answer": "C. Disconnect the power source",
->>>>>>> 8b74bc2 (Fix: db storing questions)
->>>>>>> 66b4167 (mongo error fix)
+            "correct_answer": "C. Raise the injured part above the level of the body and apply pressure on the wound",
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
-<<<<<<< HEAD
-            "question": "What is the recommended immediate first aid measure for severe bleeding?",
+            "question": "How should an eye injury caused by hot flying particles be treated during first aid?",
             "options": [
-                "A. Sew the wound closed",
-                "B. Use a hot iron to cauterize the wound",
-                "C. Apply a clean dressing without applying pressure",
-                "D. Apply pressure on the wound",
-                "E. Cleanse the wound with strong alcohol"
+                "A. Rub the eye vigorously",
+                "B. Apply ice on the eye",
+                "C. Should be taken to an eye doctor immediately without rubbing the eye",
+                "D. Use a strong eye drop without consulting any doctor"
             ],
-            "correct_answer": "D. Apply pressure on the wound",
-=======
-            "question": "In the case of severe bleeding, what is the immediate action you should take?",
-            "options": [
-                "A. Make the patient sit up",
-                "B. Apply ice to the wound",
-                "C. Make the patient lie down and rest",
-                "D. Leave the patient alone until help arrives"
-            ],
-            "correct_answer": "C. Make the patient lie down and rest",
->>>>>>> 66b4167 (mongo error fix)
+            "correct_answer": "C. Should be taken to an eye doctor immediately without rubbing the eye",
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
-<<<<<<< HEAD
-            "question": "What should be your immediate course of action if someone experiences an electric shock?",
+            "question": "What is the immediate first aid action to be taken in case of an electric shock?",
             "options": [
-                "A. Apply first aid to the burns right away.",
-                "B. Push the person away from the electrical current.",
-                "C. Leave the scene to search for professional help.",
-                "D. Remove the victim from the live conductor, if possible, using dry non-conducting materials.",
-                "E. Immediately start treating for shock."
+                "A. Call for medical aid and wait for them to arrive",
+                "B. Immediately start artificial respiration regardless of the situation",
+                "C. Disconnect the victim from the electric supply using any dry non-conducting material on hand",
+                "D. Apply pressure to any visible wounds",
+                "E. State the number 1350 to the person suffering the shock"
             ],
-            "correct_answer": "D. Remove the victim from the live conductor, if possible, using dry non-conducting materials.",
-=======
-<<<<<<< HEAD
-            "question": "What is the first step you should take when providing first aid to a person who has suffered an electric shock?",
-=======
-            "question": "It is safe to give an unconscious person something to eat or drink if they are breathing normally.",
->>>>>>> 8b74bc2 (Fix: db storing questions)
-            "options": [
-                "A. Start artificial respiration immediately",
-                "B. Call for medical assistance",
-                "C. Disconnect the power source or remove the victim from contact with the live conductor",
-                "D. Apply ice to any burns"
-            ],
-<<<<<<< HEAD
-            "correct_answer": "C. Disconnect the power source or remove the victim from contact with the live conductor",
-=======
-            "correct_answer": "B. False",
->>>>>>> 8b74bc2 (Fix: db storing questions)
->>>>>>> 66b4167 (mongo error fix)
+            "correct_answer": "C. Disconnect the victim from the electric supply using any dry non-conducting material on hand",
             "difficulty_level": "Medium",
             "type": "MCQ"
         }

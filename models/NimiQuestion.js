@@ -7,7 +7,7 @@ const QuestionSchema = new mongoose.Schema({
   correct_answer: { type: String, required: true },
   difficulty_level: { type: String, enum: ["Easy", "Medium", "Hard"], required: true },
   type: { type: String, enum: ["mcq"], required: true },
-}, { _id: false }); // Disable _id for questions
+} ,{ _id: false }); // Disable _id for questions
 
 // Define the Level Schema
 const LevelSchema = new mongoose.Schema({
@@ -26,8 +26,8 @@ const LevelSchema = new mongoose.Schema({
 // Define the Topic Schema
 const TopicSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  format: { type: String, enum: ["Text", "Image"], required: true },
-  aiModelPurpose: { type: String, enum: ["External API", "Internal NIMI Model"] },
+  format: { type: String },
+  aiModelPurpose: { type: String},
   levels: [LevelSchema], // Array of levels for this topic
 }, { _id: false }); // Disable _id for topics
 
@@ -41,7 +41,7 @@ const ModuleSchema = new mongoose.Schema({
 const NimiQuestionSchema = new mongoose.Schema({
   tradeType: { type: String, required: true },
   modules: [ModuleSchema], // Array of modules for this trade
-  aiModelPurpose: { type: String, enum: ["External API", "Internal NIMI Model"], required: true },
+  aiModelPurpose: { type: String },
 });
 
 module.exports = mongoose.model("NimiQuestion", NimiQuestionSchema);

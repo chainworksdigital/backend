@@ -275,12 +275,13 @@ router.get("/fetchQuestions", (req, res) => {
   });
 });
 
+
 router.post("/saveNimiQuestion", async (req, res) => {
   try {
     const { tradeType, modules, aiModelPurpose } = req.body;
 
     // Validate the incoming data
-    if (!tradeType || !modules || !Array.isArray(modules) || !aiModelPurpose) {
+    if (!tradeType || !modules || !Array.isArray(modules)) {
       return res.status(400).json({ error: "Invalid request body. Missing required fields." });
     }
 
@@ -291,6 +292,8 @@ router.post("/saveNimiQuestion", async (req, res) => {
         topics: module.topics.map((topic) => {
           return {
             ...topic,
+            format: topic.format ?? '', // Ensure format is null if missing
+            aiModelPurpose: topic.aiModelPurpose ?? '', // Ensure aiModelPurpose is null if missing
             levels: topic.levels.map((level) => {
               // Initialize the questions array if it doesn't exist
               if (!Array.isArray(level.questions)) {
@@ -313,7 +316,7 @@ router.post("/saveNimiQuestion", async (req, res) => {
     const nimiQuestion = new NimiQuestion({
       tradeType,
       modules: updatedModules,
-      aiModelPurpose, // Include aiModelPurpose in the NimiQuestion document
+      aiModelPurpose, // Include aiModelPurpose (default: null)
     });
 
     // Save the document to the database
@@ -333,7 +336,6 @@ router.post("/saveNimiQuestion", async (req, res) => {
   }
 });
 
-// ✅ GET Route: Fetch All NIMI Questions
 router.get("/getNimiQuestions", async (req, res) => {
   try {
     const nimiQuestions = await NimiQuestion.find();
@@ -355,7 +357,6 @@ router.get("/getNimiQuestions", async (req, res) => {
     res.status(500).json({ error: "Server error", details: error.message });
   }
 });
-
 
 
 module.exports = router;
