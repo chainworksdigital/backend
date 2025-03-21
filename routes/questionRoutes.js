@@ -4,6 +4,7 @@ const NimiQuestion = require("../models/NimiQuestion"); // NimiQuestion model fo
 const { spawn } = require("child_process"); // To run Python script
 const path = require("path"); // Manage file paths
 const fs = require("fs"); // File system for checking script existence
+const { PythonShell } = require("python-shell");
 
 const router = express.Router();
 
@@ -196,45 +197,6 @@ router.post("/save", async (req, res) => {
     res.status(500).json({ error: "Server error", details: error.message });
   }
 });
-// ✅ POST Route: Add Additional Question to a Topic
-router.post("/addQuestion", async (req, res) => {
-  try {
-    const { tradeId, moduleName, topicName, newQuestion } = req.body;
-
-    if (!tradeId || !moduleName || !topicName || !newQuestion) {
-      return res.status(400).json({ error: "Missing required fields." });
-    }
-
-    const trade = await Trade.findById(tradeId);
-    if (!trade) {
-      return res.status(404).json({ error: "Trade not found." });
-    }
-
-    // ✅ Find Module & Topic
-    const module = trade.modules.find(m => m.name === moduleName);
-    if (!module) {
-      return res.status(404).json({ error: "Module not found." });
-    }
-
-    const topic = module.topics.find(t => t.name === topicName);
-    if (!topic) {
-      return res.status(404).json({ error: "Topic not found." });
-    }
-
-    // ✅ Add Question
-    topic.questions = topic.questions || []; // Ensure the array exists
-    topic.questions.push(newQuestion);
-
-    await trade.save();
-    console.log("✅ New question added:", newQuestion);
-
-    res.status(200).json({ message: "Question added successfully.", trade });
-
-  } catch (error) {
-    console.error("🔴 Error adding question:", error);
-    res.status(500).json({ error: "Server error", details: error.message });
-  }
-});
 
 
 // ✅ GET Route: Fetch All Trades
@@ -276,12 +238,55 @@ router.get("/fetchQuestions", (req, res) => {
 });
 
 
+//check duuplicates
+router.post("/check-duplicates", (req, res) => {
+  const requestData = req.body;
+  console.log("🔍 Checking for duplicate questions:", JSON.stringify(requestData, null, 2));
+
+  let options = {
+    mode: "json",
+    pythonPath: "python3",
+    scriptPath: path.join(__dirname, "../scripts"),
+    args: [JSON.stringify(requestData)],
+  };
+
+  console.log("📌 Running Similarity Check Script: find_similar_questions.py");
+
+  let pyshell = new PythonShell("find_similar_questions.py", options);
+  let outputData = [];
+
+  pyshell.on("message", (message) => {
+    outputData.push(message);
+  });
+
+  pyshell.on("stderr", (stderr) => {
+    console.error("⚠️ Python STDERR:", stderr);
+  });
+
+  pyshell.end((err) => {
+    if (err) {
+      console.error("❌ Python execution error:", err);
+      return res.status(500).json({ error: "Python script execution failed" });
+    }
+
+    try {
+      res.json(outputData[0]);
+    } catch (parseError) {
+      console.error("❌ Error parsing Python output:", parseError);
+      res.status(500).json({ error: "Invalid response from Python script" });
+    }
+  });
+});
+
+//save questions Api
 router.post("/saveNimiQuestion", async (req, res) => {
   try {
+
     const { tradeType, modules, aiModelPurpose } = req.body;
 
     // Validate the incoming data
     if (!tradeType || !modules || !Array.isArray(modules)) {
+      console.error("Invalid request body. Missing required fields:", req.body);
       return res.status(400).json({ error: "Invalid request body. Missing required fields." });
     }
 
@@ -292,16 +297,19 @@ router.post("/saveNimiQuestion", async (req, res) => {
         topics: module.topics.map((topic) => {
           return {
             ...topic,
-            format: topic.format ?? '', // Ensure format is null if missing
-            aiModelPurpose: topic.aiModelPurpose ?? '', // Ensure aiModelPurpose is null if missing
+            format: topic.format ?? "", // Ensure format is not undefined
+            aiModelPurpose: topic.aiModelPurpose ?? "", // Ensure aiModelPurpose is not undefined
             levels: topic.levels.map((level) => {
+              
               // Initialize the questions array if it doesn't exist
               if (!Array.isArray(level.questions)) {
+                console.warn(`No questions found for level ${level.level}, initializing empty array.`);
                 level.questions = [];
               }
 
               // Add the selected questions to the respective level's questions array
               if (level.level === req.body.level) { // Only add to the specified level
+                
                 level.questions.push(...req.body.questions);
               }
 
@@ -316,11 +324,12 @@ router.post("/saveNimiQuestion", async (req, res) => {
     const nimiQuestion = new NimiQuestion({
       tradeType,
       modules: updatedModules,
-      aiModelPurpose, // Include aiModelPurpose (default: null)
+      aiModelPurpose, // Include aiModelPurpose
     });
 
-    // Save the document to the database
+    console.log("Saving to database...");
     await nimiQuestion.save();
+    console.log("Successfully saved to database.");
 
     // Respond with success
     res.status(201).json({
@@ -336,6 +345,9 @@ router.post("/saveNimiQuestion", async (req, res) => {
   }
 });
 
+
+
+// ✅ GET Route: Fetch All NIMI Questions
 router.get("/getNimiQuestions", async (req, res) => {
   try {
     const nimiQuestions = await NimiQuestion.find();
