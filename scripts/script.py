@@ -48,6 +48,7 @@ def parse_qa_output(result_text, level_of_question, num_options):
         options = [line.strip() for line in lines if option_pattern.match(line)]
         
         # Ensure the number of options matches the requested number
+        
         if len(options) > num_options:
             options = options[:num_options]
         elif len(options) < num_options:
@@ -175,3 +176,5 @@ def main():
         
 if __name__ == "__main__":
     main()
+
+    
