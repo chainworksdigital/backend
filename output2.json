@@ -1,38 +1,38 @@
 {
     "questions_and_answers": [
         {
-            "question": "What should be your immediate action in cases of severe bleeding?",
+            "question": "If you encounter a victim of electric shock, what is the first action you should take?",
             "options": [
-                "A. Immediately wash the wound with soapy water",
-                "B. Apply a pressure on the wound and make the patient lie down",
-                "C. Try to remove any objects stuck in the wound",
-                "D. Give the patient a painkiller to ease the pain"
+                "A. Call for help",
+                "B. Touch the person to check their pulse",
+                "C. Switch off the power or remove the source of contact",
+                "D. Give them water to drink"
             ],
-            "correct_answer": "B. Apply a pressure on the wound and make the patient lie down",
+            "correct_answer": "C. Switch off the power or remove the source of contact",
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
-            "question": "What is the essential first step in treating a person who has received an electric shock?",
+            "question": "In the case of severe bleeding, what is the immediate action you should take?",
             "options": [
-                "A. Splash cold water on the victim",
-                "B. Apply a sterile dressing on the burns",
-                "C. Send for medical aid and then carry on with emergency treatment",
-                "D. Immediately start practicing artificial respiration"
+                "A. Make the patient sit up",
+                "B. Apply ice to the wound",
+                "C. Make the patient lie down and rest",
+                "D. Leave the patient alone until help arrives"
             ],
-            "correct_answer": "C. Send for medical aid and then carry on with emergency treatment",
+            "correct_answer": "C. Make the patient lie down and rest",
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
-            "question": "What is the recommended first aid technique for controlling severe bleeding?",
+            "question": "What is the first step you should take when providing first aid to a person who has suffered an electric shock?",
             "options": [
-                "A. Apply a hot compress to the wound",
-                "B. Pour water over the wound",
-                "C. Apply pressure on the wound and raise the injured part above the level of the body if possible",
-                "D. Rub the wound with antiseptic"
+                "A. Start artificial respiration immediately",
+                "B. Call for medical assistance",
+                "C. Disconnect the power source or remove the victim from contact with the live conductor",
+                "D. Apply ice to any burns"
             ],
-            "correct_answer": "C. Apply pressure on the wound and raise the injured part above the level of the body if possible",
+            "correct_answer": "C. Disconnect the power source or remove the victim from contact with the live conductor",
             "difficulty_level": "Medium",
             "type": "MCQ"
         }

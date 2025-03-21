@@ -4,6 +4,7 @@ const NimiQuestion = require("../models/NimiQuestion"); // NimiQuestion model fo
 const { spawn } = require("child_process"); // To run Python script
 const path = require("path"); // Manage file paths
 const fs = require("fs"); // File system for checking script existence
+const { PythonShell } = require("python-shell");
 
 const router = express.Router();
 
@@ -237,6 +238,47 @@ router.get("/fetchQuestions", (req, res) => {
 });
 
 
+//check duuplicates
+router.post("/check-duplicates", (req, res) => {
+  const requestData = req.body;
+  console.log("🔍 Checking for duplicate questions:", JSON.stringify(requestData, null, 2));
+
+  let options = {
+    mode: "json",
+    pythonPath: "python3",
+    scriptPath: path.join(__dirname, "../scripts"),
+    args: [JSON.stringify(requestData)],
+  };
+
+  console.log("📌 Running Similarity Check Script: find_similar_questions.py");
+
+  let pyshell = new PythonShell("find_similar_questions.py", options);
+  let outputData = [];
+
+  pyshell.on("message", (message) => {
+    outputData.push(message);
+  });
+
+  pyshell.on("stderr", (stderr) => {
+    console.error("⚠️ Python STDERR:", stderr);
+  });
+
+  pyshell.end((err) => {
+    if (err) {
+      console.error("❌ Python execution error:", err);
+      return res.status(500).json({ error: "Python script execution failed" });
+    }
+
+    try {
+      res.json(outputData[0]);
+    } catch (parseError) {
+      console.error("❌ Error parsing Python output:", parseError);
+      res.status(500).json({ error: "Invalid response from Python script" });
+    }
+  });
+});
+
+//save questions Api
 router.post("/saveNimiQuestion", async (req, res) => {
   try {
     const { tradeType, modules, aiModelPurpose } = req.body;
