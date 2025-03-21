@@ -281,10 +281,12 @@ router.post("/check-duplicates", (req, res) => {
 //save questions Api
 router.post("/saveNimiQuestion", async (req, res) => {
   try {
+
     const { tradeType, modules, aiModelPurpose } = req.body;
 
     // Validate the incoming data
     if (!tradeType || !modules || !Array.isArray(modules)) {
+      console.error("Invalid request body. Missing required fields:", req.body);
       return res.status(400).json({ error: "Invalid request body. Missing required fields." });
     }
 
@@ -295,16 +297,19 @@ router.post("/saveNimiQuestion", async (req, res) => {
         topics: module.topics.map((topic) => {
           return {
             ...topic,
-            format: topic.format ?? '', // Ensure format is null if missing
-            aiModelPurpose: topic.aiModelPurpose ?? '', // Ensure aiModelPurpose is null if missing
+            format: topic.format ?? "", // Ensure format is not undefined
+            aiModelPurpose: topic.aiModelPurpose ?? "", // Ensure aiModelPurpose is not undefined
             levels: topic.levels.map((level) => {
+              
               // Initialize the questions array if it doesn't exist
               if (!Array.isArray(level.questions)) {
+                console.warn(`No questions found for level ${level.level}, initializing empty array.`);
                 level.questions = [];
               }
 
               // Add the selected questions to the respective level's questions array
               if (level.level === req.body.level) { // Only add to the specified level
+                
                 level.questions.push(...req.body.questions);
               }
 
@@ -319,11 +324,12 @@ router.post("/saveNimiQuestion", async (req, res) => {
     const nimiQuestion = new NimiQuestion({
       tradeType,
       modules: updatedModules,
-      aiModelPurpose, // Include aiModelPurpose (default: null)
+      aiModelPurpose, // Include aiModelPurpose
     });
 
-    // Save the document to the database
+    console.log("Saving to database...");
     await nimiQuestion.save();
+    console.log("Successfully saved to database.");
 
     // Respond with success
     res.status(201).json({
@@ -338,6 +344,7 @@ router.post("/saveNimiQuestion", async (req, res) => {
     });
   }
 });
+
 
 
 // ✅ GET Route: Fetch All NIMI Questions

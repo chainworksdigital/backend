@@ -1,39 +1,25 @@
 {
     "questions_and_answers": [
         {
-            "question": "If you encounter a victim of electric shock, what is the first action you should take?",
+            "question": "What should you do if someone is experiencing severe bleeding?",
             "options": [
-                "A. Call for help",
-                "B. Touch the person to check their pulse",
-                "C. Switch off the power or remove the source of contact",
-                "D. Give them water to drink"
+                "A. Leave it until professional medical aid arrives.",
+                "B. Apply pressure to the wound and raise the injured part above the level of the body if possible.",
+                "C. Wash the wound with water immediately."
             ],
-            "correct_answer": "C. Switch off the power or remove the source of contact",
+            "correct_answer": "B. Apply pressure to the wound and raise the injured part above the level of the body if possible.",
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
-            "question": "In the case of severe bleeding, what is the immediate action you should take?",
+            "question": "How should you handle a victim who has just received an electric shock?",
             "options": [
-                "A. Make the patient sit up",
-                "B. Apply ice to the wound",
-                "C. Make the patient lie down and rest",
-                "D. Leave the patient alone until help arrives"
+                "A. Pull the person off the conductor with your bare hands.",
+                "B. Leave the person till professional help arrives.",
+                "C. Use dry non-conducting materials such as a wooden bar, rope, or a scarf to remove the victim from contact with the live conductor."
             ],
-            "correct_answer": "C. Make the patient lie down and rest",
+            "correct_answer": "C. Use dry non-conducting materials such as a wooden bar, rope, or a scarf to remove the victim from contact with the live conductor.",
             "difficulty_level": "Easy",
-            "type": "MCQ"
-        },
-        {
-            "question": "What is the first step you should take when providing first aid to a person who has suffered an electric shock?",
-            "options": [
-                "A. Start artificial respiration immediately",
-                "B. Call for medical assistance",
-                "C. Disconnect the power source or remove the victim from contact with the live conductor",
-                "D. Apply ice to any burns"
-            ],
-            "correct_answer": "C. Disconnect the power source or remove the victim from contact with the live conductor",
-            "difficulty_level": "Medium",
             "type": "MCQ"
         }
     ]

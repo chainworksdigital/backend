@@ -13,15 +13,28 @@ load_dotenv()
 # Initialize OpenAI client
 client_openai = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-def get_embedding(text_to_embed):
-    chunk_size = 8000
-    text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(model_name="text-embedding-3-small", chunk_size=chunk_size, chunk_overlap=0)
-    result = text_splitter.split_text(text_to_embed)
-    text = result[0].replace("\n", " ")
+# MongoDB connection
+def get_db_client():
     try:
-        return clientOpenAI.embeddings.create(input=[text], model="text-embedding-3-small").data[0].embedding
+        client = MongoClient(os.getenv("MONGO_URI"))
+        db = client["questionGenerator"]
+        print("✅ Connected to MongoDB")
+        return db
     except Exception as e:
-        print(f"OpenAI API Error: {e}")
+        print(f"❌ MongoDB connection failed: {e}", file=sys.stderr)
+        raise
+
+# Generate embeddings
+def get_embedding(text):
+    try:
+        text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
+            model_name="text-embedding-3-small", chunk_size=8000, chunk_overlap=0
+        )
+        chunks = text_splitter.split_text(text)
+        embedding = client_openai.embeddings.create(input=[chunks[0].replace("\n", " ")], model="text-embedding-3-small").data[0].embedding
+        return np.array(embedding)
+    except Exception as e:
+        print(f"❌ Error generating embedding: {e}", file=sys.stderr)
         return np.zeros(1536)
 
 # Find similar questions
@@ -58,25 +71,35 @@ def get_similar_questions(new_question, threshold=0.7):
                 new_question_embedding_reshaped = new_question_vector.reshape(1, -1)
                 similarity_scores = cosine_similarity(new_question_embedding_reshaped, embedding_matrix)[0]
 
-            for index, sim_score in enumerate(similarity_scores):
-                if sim_score >= threshold:
-                    sim_ques = None
-                    for d in questions_list[index]["ques"]:
-                        if d.get("language") == language:
-                            sim_ques = d
-                            break
-                    if sim_ques:
-                        if language in similar_questions:
-                            similar_questions[language].append({
-                                "simQuesId": questions_list[index]["_id"],
-                                "simQues": sim_ques["is"],
-                                "simScore": sim_score
-                            })
-                        else:
-                            similar_questions[language] = [{
-                                "simQuesId": questions_list[index]["_id"],
-                                "simQues": sim_ques["is"],
-                                "simScore": sim_score
-                            }]
-    
-    return {"similarQuestions": similar_questions, "newVector": new_question_embedding}
+                for index, sim_score in enumerate(similarity_scores):
+                    if sim_score >= threshold:
+                        sim_ques = next((d for d in questions_list[index].get("ques", []) if d.get("language") == language), None)
+                        if sim_ques:
+                            if language in similar_questions:
+                                similar_questions[language].append({
+                                    "simQuesId": str(questions_list[index]["_id"]),
+                                    "simQues": sim_ques["is"],
+                                    "simScore": sim_score
+                                })
+                            else:
+                                similar_questions[language] = [{
+                                    "simQuesId": str(questions_list[index]["_id"]),
+                                    "simQues": sim_ques["is"],
+                                    "simScore": sim_score
+                                }]
+
+        print("✅ Similarity check completed")
+        return {"similarQuestions": similar_questions, "newVector": new_question_embedding}
+    except Exception as e:
+        print(f"❌ Error in get_similar_questions: {e}")
+        return {"error": str(e)}
+
+# Main execution
+if __name__ == "__main__":
+    try:
+        input_data = json.loads(sys.argv[1])
+        result = get_similar_questions(input_data)
+        print(json.dumps(result))
+    except Exception as e:
+        print(f"❌ Script execution failed: {e}")
+        print(json.dumps({"error": str(e)}))
