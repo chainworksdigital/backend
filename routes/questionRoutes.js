@@ -358,5 +358,27 @@ router.get("/getNimiQuestions", async (req, res) => {
   }
 });
 
+//get nimi question by ID
+router.get("/getNimiQuestion/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    console.log(`📌 Fetching NIMI question with ID: ${id}`);
+    const nimiQuestion = await NimiQuestion.findById(id);
+
+    if (!nimiQuestion) {
+      console.warn(`⚠️ No NIMI question found for ID: ${id}`);
+      return res.status(404).json({ message: "NIMI question not found." });
+    }
+
+    console.log("📤 Sending data to frontend...");
+    console.log("🔹 Data sent to frontend:", JSON.stringify(nimiQuestion, null, 2));
+
+    res.status(200).json(nimiQuestion);
+  } catch (error) {
+    console.error("🔴 Error fetching NIMI question:", error);
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
+});
 
 module.exports = router;
