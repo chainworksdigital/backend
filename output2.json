@@ -1,25 +1,41 @@
 {
     "questions_and_answers": [
         {
-            "question": "What should you do if someone is experiencing severe bleeding?",
+            "question": "What is the immediate first aid for a person receiving an electric shock?",
             "options": [
-                "A. Leave it until professional medical aid arrives.",
-                "B. Apply pressure to the wound and raise the injured part above the level of the body if possible.",
-                "C. Wash the wound with water immediately."
+                "A. Apply first aid to the burns immediately.",
+                "B. Give the person a glass of water to drink.",
+                "C. Disconnect the contact by switching off the power or removing the plug.",
+                "D. Apply a clean, sterile dressing to the electric burns."
             ],
-            "correct_answer": "B. Apply pressure to the wound and raise the injured part above the level of the body if possible.",
+            "correct_answer": "C. Disconnect the contact by switching off the power or removing the plug.",
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
-            "question": "How should you handle a victim who has just received an electric shock?",
+            "question": "What is the immediate action to control severe bleeding from a wound?",
             "options": [
-                "A. Pull the person off the conductor with your bare hands.",
-                "B. Leave the person till professional help arrives.",
-                "C. Use dry non-conducting materials such as a wooden bar, rope, or a scarf to remove the victim from contact with the live conductor."
+                "A. Pouring warm water on the wound.",
+                "B. Making the patient lie down and rest, and if possible, raise the injured part above the level of the body.",
+                "C. Applying a cold pack to the wound.",
+                "D. Ignoring the wound until professional help arrives."
             ],
-            "correct_answer": "C. Use dry non-conducting materials such as a wooden bar, rope, or a scarf to remove the victim from contact with the live conductor.",
+            "correct_answer": "B. Making the patient lie down and rest, and if possible, raise the injured part above the level of the body.",
             "difficulty_level": "Easy",
+            "type": "MCQ"
+        },
+        {
+            "question": "In a situation where a person has received an electric shock, what is the correct first aid procedures that should be followed?",
+            "options": [
+                "A. Wrap hands in a dry cloth and touch the victim immediately.",
+                "B. Ignore the electric contact and attend to the wounds first.",
+                "C. Disconnect the electrical contact as soon as possible, then restore the victim's breathing before treating burns.",
+                "D. Apply first aid to burns before checking if the victim can breathe.",
+                "E. Send for medical aid before doing anything else.",
+                "F. Attempt to examine the victim while they are still in contact with the electric supply."
+            ],
+            "correct_answer": "C. Disconnect the electrical contact as soon as possible, then restore the victim's breathing before treating burns.",
+            "difficulty_level": "Medium",
             "type": "MCQ"
         }
     ]

@@ -1,105 +1,133 @@
 import json
+import sys
+import logging
 import numpy as np
 from pymongo import MongoClient
 from sklearn.metrics.pairwise import cosine_similarity
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 from openai import OpenAI
-import os
-import sys
 from dotenv import load_dotenv
+import os
 
+# ✅ Load environment variables
 load_dotenv()
 
-# Initialize OpenAI client
-client_openai = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# ✅ Logging setup
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
-# MongoDB connection
-def get_db_client():
+# ✅ OpenAI Client Setup
+openai_api_key = os.getenv("OPENAI_API_KEY")
+if not openai_api_key:
+    logging.error("❌ Missing OpenAI API Key. Check environment variables.")
+    sys.exit(1)
+
+clientOpenAI = OpenAI(api_key=openai_api_key)
+
+# ✅ MongoDB Setup
+mongo_uri = os.getenv("MONGO_URI")
+if not mongo_uri:
+    logging.error("❌ Missing MongoDB URI. Check environment variables.")
+    sys.exit(1)
+
+client = MongoClient(mongo_uri)
+db = client["questionGenerator"]
+nimi_collection = db["nimiquestions"]  # ✅ Collection Name
+
+# ✅ Function to Generate Embedding
+def get_embedding(text_to_embed):
     try:
-        client = MongoClient(os.getenv("MONGO_URI"))
-        db = client["questionGenerator"]
-        print("✅ Connected to MongoDB")
-        return db
+        response = clientOpenAI.embeddings.create(input=[text_to_embed], model="text-embedding-3-small")
+        embedding = response.data[0].embedding
+
+        if not embedding:
+            raise ValueError("Received empty embedding from OpenAI.")
+
+        logging.info(f"✅ Embedding generated for text: {text_to_embed[:50]}...")  # Log first 50 chars
+        return embedding
     except Exception as e:
-        print(f"❌ MongoDB connection failed: {e}", file=sys.stderr)
-        raise
+        logging.error(f"❌ OpenAI API Error: {e}")
+        return np.zeros(1536)  # Return zero vector to avoid crashes
 
-# Generate embeddings
-def get_embedding(text):
+# ✅ Function to Get Similar Questions
+def get_similar_questions(question_text, threshold=0.7):
     try:
-        text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
-            model_name="text-embedding-3-small", chunk_size=8000, chunk_overlap=0
-        )
-        chunks = text_splitter.split_text(text)
-        embedding = client_openai.embeddings.create(input=[chunks[0].replace("\n", " ")], model="text-embedding-3-small").data[0].embedding
-        return np.array(embedding)
-    except Exception as e:
-        print(f"❌ Error generating embedding: {e}", file=sys.stderr)
-        return np.zeros(1536)
-
-# Find similar questions
-def get_similar_questions(new_question, threshold=0.7):
-    try:
-        db = get_db_client()
-        question_model = db["nimiquestions"]
-        questions_list = list(question_model.find())
-
-        question_vectors = {}
-        embedding_vector_length = 1536
-
-        # Extract embeddings from the database
-        for question in questions_list:
-            for ques_lang_obj in question.get("ques", []):
-                vector = np.array(ques_lang_obj.get("vector", np.zeros(embedding_vector_length)))
-                language = ques_lang_obj.get("language", "unknown")
-                if language in question_vectors:
-                    question_vectors[language].append(vector)
-                else:
-                    question_vectors[language] = [vector]
-
-        similar_questions = {}
-        new_question_embedding = {}
-
-        # Process new question
-        for question_lang_obj in new_question:
-            language = question_lang_obj.get("language", "unknown")
-            new_question_vector = get_embedding(question_lang_obj.get("is", ""))
-            new_question_embedding[language] = new_question_vector
-
-            if language in question_vectors and len(question_vectors[language]) > 0:
-                embedding_matrix = np.vstack(question_vectors[language])
-                new_question_embedding_reshaped = new_question_vector.reshape(1, -1)
-                similarity_scores = cosine_similarity(new_question_embedding_reshaped, embedding_matrix)[0]
-
-                for index, sim_score in enumerate(similarity_scores):
-                    if sim_score >= threshold:
-                        sim_ques = next((d for d in questions_list[index].get("ques", []) if d.get("language") == language), None)
-                        if sim_ques:
-                            if language in similar_questions:
-                                similar_questions[language].append({
-                                    "simQuesId": str(questions_list[index]["_id"]),
-                                    "simQues": sim_ques["is"],
-                                    "simScore": sim_score
+        # ✅ Fetch all questions from DB
+        questions_list = []
+        for doc in nimi_collection.find():
+            for module in doc.get("modules", []):
+                for topic in module.get("topics", []):
+                    for level in topic.get("levels", []):
+                        for qna in level.get("questions", []):  # 🔥 FIXED: Use "questions" instead of "questions_and_answers"
+                            question_text_in_db = qna.get("question", "").strip()
+                            if question_text_in_db:
+                                questions_list.append({
+                                    "text": question_text_in_db,
+                                    "id": str(qna.get("_id"))
                                 })
-                            else:
-                                similar_questions[language] = [{
-                                    "simQuesId": str(questions_list[index]["_id"]),
-                                    "simQues": sim_ques["is"],
-                                    "simScore": sim_score
-                                }]
 
-        print("✅ Similarity check completed")
-        return {"similarQuestions": similar_questions, "newVector": new_question_embedding}
+        if not questions_list:
+            logging.warning("⚠️ No questions found in MongoDB.")
+            return {"similarQuestions": [], "newVector": []}
+
+        logging.info(f"✅ Total {len(questions_list)} questions retrieved from MongoDB.")
+
+        # ✅ Generate embedding for the new question
+        new_question_embedding = get_embedding(question_text)
+        new_question_vector = np.array(new_question_embedding)
+
+        # ✅ Compare with stored questions
+        similar_questions = []
+        for q in questions_list:
+            stored_embedding = get_embedding(q["text"])  # 🔥 Generate embedding dynamically
+            stored_vector = np.array(stored_embedding)
+
+            if np.all(stored_vector == 0):  # Skip if embedding failed
+                continue
+
+            sim_score = cosine_similarity(new_question_vector.reshape(1, -1), stored_vector.reshape(1, -1))[0][0]
+
+            if sim_score >= threshold:
+                similar_questions.append({
+                    "simQuesId": q["id"],
+                    "simQues": q["text"],
+                    "simScore": round(sim_score, 4)  # Round for better readability
+                })
+
+        logging.info(f"✅ Found {len(similar_questions)} similar questions.")
+
+        return {
+            "inputQuestion": question_text,
+            "similarQuestions": similar_questions,  # ✅ List of similar questions
+            "newVector": new_question_embedding  # ✅ Ensure it's serializable
+        }
+
     except Exception as e:
-        print(f"❌ Error in get_similar_questions: {e}")
+        logging.error(f"❌ Error in get_similar_questions: {e}")
         return {"error": str(e)}
 
-# Main execution
+# ✅ Main Execution
 if __name__ == "__main__":
     try:
+        # ✅ Read input data and validate format
         input_data = json.loads(sys.argv[1])
-        result = get_similar_questions(input_data)
+        logging.info(f"📥 Received input: {input_data}")
+
+        if isinstance(input_data, dict) and "question" in input_data:
+            question_text = input_data["question"]
+        else:
+            raise ValueError("Invalid input format. Expected {'question': '...'}")
+
+        # ✅ Run Similarity Check
+        result = get_similar_questions(question_text)
+
+        # ✅ Output JSON response
         print(json.dumps(result))
+
+    except json.JSONDecodeError as e:
+        logging.error(f"❌ Invalid JSON input: {e}")
+        print(json.dumps({"error": f"Invalid JSON input: {e}"}))
+        sys.exit(1)
+
     except Exception as e:
-        print(f"❌ Script execution failed: {e}")
+        logging.error(f"❌ Script execution failed: {e}")
         print(json.dumps({"error": str(e)}))
+        sys.exit(1)
