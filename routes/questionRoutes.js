@@ -371,4 +371,27 @@ router.get("/getNimiQuestions", async (req, res) => {
 });
 
 
+router.patch("/updateNimiQuestion/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { tradeType, modules, aiModelPurpose } = req.body;
+
+    const updatedNimiQuestion = await NimiQuestion.findOneAndUpdate(
+      { _id: id },
+      { tradeType, modules, aiModelPurpose },
+      { new: true }
+    );  
+
+    if (!updatedNimiQuestion) {
+      return res.status(404).json({ message: "NIMI question not found." });
+    }
+
+    res.status(200).json(updatedNimiQuestion);
+  } catch (error) {
+    console.error("🔴 Error updating NIMI question:", error);
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
+})
+
+
 module.exports = router;

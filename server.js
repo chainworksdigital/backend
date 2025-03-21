@@ -13,7 +13,12 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000', // or your frontend domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 app.use(bodyParser.json());
 
 app.use("/api/questions", questionRoutes);
