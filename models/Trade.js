@@ -6,7 +6,7 @@ const QuestionSchema = new mongoose.Schema({
   options: { type: [String] }, 
   correct_answer: { type: String }, 
   difficulty_level: { type: String, enum: ["Easy", "Medium", "Hard"] },
-  type: { type: String, enum: ["mcq"] },
+  type: { type: String, enum: ["MCQ"] },
 });
 
 // Define the Level Schema

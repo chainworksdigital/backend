@@ -6,7 +6,7 @@ const QuestionSchema = new mongoose.Schema({
   options: { type: [String], required: true },
   correct_answer: { type: String, required: true },
   difficulty_level: { type: String, enum: ["Easy", "Medium", "Hard"], required: true },
-  type: { type: String, enum: ["mcq"], required: true },
+  type: { type: String, enum: ["MCQ"], required: true },
 } ,{ _id: false }); // Disable _id for questions
 
 // Define the Level Schema

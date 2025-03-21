@@ -1,39 +1,38 @@
 {
     "questions_and_answers": [
         {
-            "question": "What immediate action should be taken for severe bleeding during first aid?",
+            "question": "What should you do if you see someone experiencing an electric shock?",
             "options": [
-                "A. Make the patient stand and maintain balance",
-                "B. Apply fire to the wound",
-                "C. Raise the injured part above the level of the body and apply pressure on the wound",
-                "D. Prick the wound with a needle"
+                "A. Run to them and grab them to pull them away from the source of the electricity",
+                "B. Touch the electrical source to try and disconnect it",
+                "C. Use a dry, non-conducting material such as a wooden bar, rope, or a scarf to remove the victim from contact with the electrical source",
+                "D. Splash water on the victim and the electrical source to break the connection"
             ],
-            "correct_answer": "C. Raise the injured part above the level of the body and apply pressure on the wound",
+            "correct_answer": "C. Use a dry, non-conducting material such as a wooden bar, rope, or a scarf to remove the victim from contact with the electrical source",
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
-            "question": "How should an eye injury caused by hot flying particles be treated during first aid?",
+            "question": "How should you manage a person with severe bleeding?",
             "options": [
-                "A. Rub the eye vigorously",
-                "B. Apply ice on the eye",
-                "C. Should be taken to an eye doctor immediately without rubbing the eye",
-                "D. Use a strong eye drop without consulting any doctor"
+                "A. Leave them as they are and wait for help",
+                "B. Try to close the wound using a metal clamp",
+                "C. Apply pressure on the wound until the bleeding stops and apply a dressing over the wound",
+                "D. Wash the wound with alcohol to clean it"
             ],
-            "correct_answer": "C. Should be taken to an eye doctor immediately without rubbing the eye",
+            "correct_answer": "C. Apply pressure on the wound until the bleeding stops and apply a dressing over the wound",
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
-            "question": "What is the immediate first aid action to be taken in case of an electric shock?",
+            "question": "When dealing with a victim of electric shock, what precautions should you take before touching the victim?",
             "options": [
-                "A. Call for medical aid and wait for them to arrive",
-                "B. Immediately start artificial respiration regardless of the situation",
-                "C. Disconnect the victim from the electric supply using any dry non-conducting material on hand",
-                "D. Apply pressure to any visible wounds",
-                "E. State the number 1350 to the person suffering the shock"
+                "A. Inform the victim's family about the incident",
+                "B. Ensure you are insulated and the circuit is made dead",
+                "C. Apply pressure to any visible wounds",
+                "D. Place the victim in a recovery position"
             ],
-            "correct_answer": "C. Disconnect the victim from the electric supply using any dry non-conducting material on hand",
+            "correct_answer": "B. Ensure you are insulated and the circuit is made dead",
             "difficulty_level": "Medium",
             "type": "MCQ"
         }

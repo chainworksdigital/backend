@@ -38,7 +38,7 @@ def parse_qa_output(result_text, type_of_question, level_of_question):
         options = []
         correct_answer = None
 
-        if type_of_question.lower() == "mcq":
+        if type_of_question.lower() == "MCQ":
             option_pattern = re.compile(r"^\s*[A-D]\.\s*.+", re.MULTILINE)
             options = [line.strip() for line in lines if option_pattern.match(line)]
             
@@ -111,7 +111,7 @@ def create_qa_chain(vector_store):
 def generate_prompt(type_of_question, topicName, level_of_question, num_questions):
     """Generates structured prompts for different question types."""
     prompt_formats = {
-        "mcq": (
+        "MCQ": (
             f"Generate {num_questions} multiple-choice questions (MCQs) on {topicName} "
             f"at a {level_of_question} difficulty level. Each question should have four answer choices "
             f"(A, B, C, D) and clearly indicate the correct answer.\n\n"
