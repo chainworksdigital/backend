@@ -1,38 +1,38 @@
 {
     "questions_and_answers": [
         {
-            "question": "What should you do if you see someone experiencing an electric shock?",
+            "question": "What should be your immediate action in cases of severe bleeding?",
             "options": [
-                "A. Run to them and grab them to pull them away from the source of the electricity",
-                "B. Touch the electrical source to try and disconnect it",
-                "C. Use a dry, non-conducting material such as a wooden bar, rope, or a scarf to remove the victim from contact with the electrical source",
-                "D. Splash water on the victim and the electrical source to break the connection"
+                "A. Immediately wash the wound with soapy water",
+                "B. Apply a pressure on the wound and make the patient lie down",
+                "C. Try to remove any objects stuck in the wound",
+                "D. Give the patient a painkiller to ease the pain"
             ],
-            "correct_answer": "C. Use a dry, non-conducting material such as a wooden bar, rope, or a scarf to remove the victim from contact with the electrical source",
+            "correct_answer": "B. Apply a pressure on the wound and make the patient lie down",
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
-            "question": "How should you manage a person with severe bleeding?",
+            "question": "What is the essential first step in treating a person who has received an electric shock?",
             "options": [
-                "A. Leave them as they are and wait for help",
-                "B. Try to close the wound using a metal clamp",
-                "C. Apply pressure on the wound until the bleeding stops and apply a dressing over the wound",
-                "D. Wash the wound with alcohol to clean it"
+                "A. Splash cold water on the victim",
+                "B. Apply a sterile dressing on the burns",
+                "C. Send for medical aid and then carry on with emergency treatment",
+                "D. Immediately start practicing artificial respiration"
             ],
-            "correct_answer": "C. Apply pressure on the wound until the bleeding stops and apply a dressing over the wound",
+            "correct_answer": "C. Send for medical aid and then carry on with emergency treatment",
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
-            "question": "When dealing with a victim of electric shock, what precautions should you take before touching the victim?",
+            "question": "What is the recommended first aid technique for controlling severe bleeding?",
             "options": [
-                "A. Inform the victim's family about the incident",
-                "B. Ensure you are insulated and the circuit is made dead",
-                "C. Apply pressure to any visible wounds",
-                "D. Place the victim in a recovery position"
+                "A. Apply a hot compress to the wound",
+                "B. Pour water over the wound",
+                "C. Apply pressure on the wound and raise the injured part above the level of the body if possible",
+                "D. Rub the wound with antiseptic"
             ],
-            "correct_answer": "B. Ensure you are insulated and the circuit is made dead",
+            "correct_answer": "C. Apply pressure on the wound and raise the injured part above the level of the body if possible",
             "difficulty_level": "Medium",
             "type": "MCQ"
         }
