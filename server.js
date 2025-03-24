@@ -13,7 +13,12 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000', // or your frontend domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 app.use(bodyParser.json());
 
 app.use("/api/questions", questionRoutes);
@@ -26,9 +31,9 @@ app.post("/api/generate-questions", (req, res) => {
   console.log("🚀 Received Request:", JSON.stringify(req.body, null, 2)); // Log the request data
 
   // ✅ Determine which script to run based on aiModelPurpose
-  let scriptFile = "script.py"; // Default to script.py
+  let scriptFile = "external.py"; // Default to external.py
   if (requestData.aiModelPurpose === "Internal NIMI Model") {
-    scriptFile = "script1.py"; // Use script1.py for internal model
+    scriptFile = "internal.py"; // Use script1.py for internal model
   }
 
   // ✅ Define options for PythonShell

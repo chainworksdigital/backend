@@ -68,14 +68,14 @@ router.post("/save", async (req, res) => {
       return res.status(500).json({ error: "Failed to save trade entry.", details: error.message });
     }
 
-    const scriptFile = aiModelPurpose === "External API" ? "script.py" : "script1.py";
+    const scriptFile = aiModelPurpose === "External API" ? "external.py" : "internal.py";
     const pythonScriptPath = path.join(__dirname, "..", "scripts", scriptFile);
 
     if (!fs.existsSync(pythonScriptPath)) {
       return res.status(500).json({ error: `Python script ${scriptFile} not found.` });
     }
 
-    console.log(`📌 Running: ${scriptFile}`);
+    console.log(`📌 Running python script successfully: ${scriptFile}`);
 
     const pythonProcess = spawn("python3", [pythonScriptPath]);
     pythonProcess.stdin.write(JSON.stringify(savedEntry));
@@ -183,7 +183,7 @@ router.post("/save", async (req, res) => {
 
           if (!updatedTrade) return res.status(500).json({ error: "Trade update failed." });
 
-          console.log("✅ Updated Trade Entry:", JSON.stringify(updatedTrade, null, 2));
+          console.log("✅ Updated Trade Entry from script:", JSON.stringify(updatedTrade, null, 2));
           
           res.status(201).json({ message: "Data saved and questions added successfully!", trade: updatedTrade });
 
@@ -369,6 +369,51 @@ router.get("/getNimiQuestions", async (req, res) => {
     res.status(500).json({ error: "Server error", details: error.message });
   }
 });
+
+//get nimi question by ID
+router.get("/getNimiQuestion/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    console.log(`📌 Fetching NIMI question with ID: ${id}`);
+    const nimiQuestion = await NimiQuestion.findById(id);
+
+    if (!nimiQuestion) {
+      console.warn(`⚠️ No NIMI question found for ID: ${id}`);
+      return res.status(404).json({ message: "NIMI question not found." });
+    }
+
+    console.log("📤 Sending data to frontend...");
+    console.log("🔹 Data sent to frontend:", JSON.stringify(nimiQuestion, null, 2));
+
+    res.status(200).json(nimiQuestion);
+  } catch (error) {
+    console.error("🔴 Error fetching NIMI question:", error);
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
+});
+
+router.patch("/updateNimiQuestion/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { tradeType, modules, aiModelPurpose } = req.body;
+
+    const updatedNimiQuestion = await NimiQuestion.findOneAndUpdate(
+      { _id: id },
+      { tradeType, modules, aiModelPurpose },
+      { new: true }
+    );  
+
+    if (!updatedNimiQuestion) {
+      return res.status(404).json({ message: "NIMI question not found." });
+    }
+
+    res.status(200).json(updatedNimiQuestion);
+  } catch (error) {
+    console.error("🔴 Error updating NIMI question:", error);
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
+})
 
 
 module.exports = router;
