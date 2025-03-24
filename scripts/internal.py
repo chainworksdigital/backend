@@ -4,17 +4,16 @@ import json
 import re
 import random
 from dotenv import load_dotenv
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+# import ollama  # Local Ollama API
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
 from langchain_community.vectorstores import Chroma
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.chains.retrieval_qa.base import RetrievalQA
+from langchain_ollama import OllamaEmbeddings
+from langchain_ollama import ChatOllama
 
 # Load environment variables
 load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY")
-if not api_key:
-    raise ValueError("Missing OpenAI API key. Please set it in the environment or .env file.")
 
 MD_FOLDER = "./markdown_files"
 
@@ -48,7 +47,6 @@ def parse_qa_output(result_text, level_of_question, num_options):
         options = [line.strip() for line in lines if option_pattern.match(line)]
         
         # Ensure the number of options matches the requested number
-        
         if len(options) > num_options:
             options = options[:num_options]
         elif len(options) < num_options:
@@ -76,6 +74,34 @@ def parse_qa_output(result_text, level_of_question, num_options):
     return qa_pairs
 
 
+
+
+
+def generate_prompt(type_of_question, topicName, level_of_question, num_questions):
+    """Generates structured prompts for different question types."""
+    prompt_formats = {
+        "MCQ": (
+            f"Generate {num_questions} multiple-choice questions (MCQs) on {topicName} "
+            f"at a {level_of_question} difficulty level. Each question should have four answer choices "
+            f"(A, B, C, D) and clearly indicate the correct answer.\n\n"
+            f"Format:\n1. Question text\nA. Option1\nB. Option2\nC. Option3\nD. Option4\n*Answer: X*"
+        ),
+        "true/false": (
+            f"Generate {num_questions} True/False questions on {topicName} "
+            f"at a {level_of_question} difficulty level. Each question should have two answer choices "
+            f"(A. True, B. False) and clearly indicate the correct answer.\n\n"
+            f"Format:\n1. Question text\nA. True\nB. False\n*Answer: X*"
+        ),
+        "subjective": (
+            f"Generate {num_questions} subjective questions along with detailed answers on {topicName} "
+            f"at a {level_of_question} difficulty level. The answers should be comprehensive and informative.\n\n"
+            f"Format:\n1. Question text\n*Answer:* Detailed answer."
+        ),
+    }
+    return prompt_formats.get(type_of_question)
+
+
+
 def main():
     """Processes trade data and generates MCQ questions dynamically."""
     try:
@@ -84,6 +110,38 @@ def main():
         levels = trade_data["modules"][0]["topics"][0]["levels"]
 
         md_path = f"{MD_FOLDER}/{topicName.replace(' ', '_')}.md"
+        
+        
+        # topicName="Safety_Precautions_in_SMAW,_OAW_and_OAGC.md"
+        # levels= [
+        #     {
+        #       "level": "L1",
+        #       "numQuestions": 3,
+        #       "questions": [],
+        #       "type": "MCQ",
+        #       "mcqOptions": 6,
+        #       "_id": "67de895421162a4f78c122a4"
+        #     },
+        #     {
+        #       "level": "L2",
+        #       "numQuestions": 2,
+        #       "questions": [],
+        #       "type": "MCQ",
+        #       "mcqOptions": 6,
+        #       "_id": "67de895421162a4f78c122a5"
+        #     },
+        #     {
+        #       "level": "L3",
+        #       "numQuestions": 1,
+        #       "questions": [],
+        #       "type": "MCQ",
+        #       "mcqOptions": 6,
+        #       "_id": "67de895421162a4f78c122a6"
+        #     }
+        #   ]
+        # total_questions_allowed= 6
+        
+        # md_path  ="/home/uttara/Documents/git/backend/markdown_files/First_Aid.md"
 
         if not os.path.exists(md_path):
             print(json.dumps({"error": f"No Markdown file found for topic: {topicName}"}))
@@ -103,10 +161,19 @@ def main():
         random.shuffle(split_docs)
         selected_chunks = split_docs[:min(5, len(split_docs))]  # Select a random subset of chunks
 
-        vector_store = Chroma.from_documents(selected_chunks, OpenAIEmbeddings(model="text-embedding-3-small"))
+        # Use Ollama for embeddings
+        embeddings = OllamaEmbeddings(model="mistral")
+
+        # Create a Chroma vector store from the documents
+        vector_store = Chroma.from_documents(selected_chunks, embeddings)
+
+        # Use Ollama for the QA chain
+        llm = ChatOllama(model="mistral")
+
+        # Set up the QA chain with the retriever from Chroma
         qa_chain = RetrievalQA.from_chain_type(
-            llm=ChatOpenAI(model_name="gpt-4", temperature=0.9, max_tokens=4096),  # Increased temperature for more variability
-            chain_type="stuff",
+            llm=llm,  # Use the locally hosted Ollama LLM
+            chain_type="stuff",  # "stuff" means retrieval-augmented generation
             retriever=vector_store.as_retriever(search_type="similarity", search_kwargs={"k": min(10, len(selected_chunks))}),
             return_source_documents=True
         )
@@ -125,7 +192,10 @@ def main():
 
             # Get the number of MCQ options from the level data
             num_options = int(level.get("mcqOptions", 4))  # Default to 4 if not specified
+            type_of_question = level.get("type", "").strip().lower()
+            
 
+            
             # Add more variability to the prompt
             random_element = random.randint(1000, 9999)  # Random number for uniqueness
             random_phrase = random.choice([
@@ -135,20 +205,18 @@ def main():
                 "Use diverse phrasing and avoid repetition."
             ])
             prompt_variations = [
-                f"Generate {num_questions} multiple-choice questions (MCQs) on {topicName} "
+                f"{random_phrase} Random element: {random_element} Generate {num_questions} multiple-choice questions (MCQs) on {topicName} "
                 f"at a {level_of_question} difficulty level. Each question should have {num_options} answer choices "
                 f"(A, B, C, D, ...) and clearly indicate the correct answer. {random_phrase} Random element: {random_element}\n\n"
-                f"Format:\n1. Question text\nA. Option1\nB. Option2\nC. Option3\nD. Option4\n...\n**Answer: X**",
-                f"Create {num_questions} MCQs about {topicName} with a difficulty level of {level_of_question}. "
-                f"Ensure each question has {num_options} options (A, B, C, D, ...) and specify the correct answer. {random_phrase} Random element: {random_element}\n\n"
-                f"Format:\n1. Question text\nA. Option1\nB. Option2\nC. Option3\nD. Option4\n...\n**Answer: X**",
-                f"Write {num_questions} multiple-choice questions on {topicName} at a {level_of_question} difficulty. "
-                f"Each question must have {num_options} options (A, B, C, D, ...) and a clearly marked correct answer. {random_phrase} Random element: {random_element}\n\n"
-                f"Format:\n1. Question text\nA. Option1\nB. Option2\nC. Option3\nD. Option4\n...\n**Answer: X**"
+                f"Format:\n1. Question text\nA. Option1\nB. Option2\nC. Option3\nD. Option4\n...\n **Answer: X**"
+                f"don't give previously generated question!"
             ]
+            
 
             # Randomly select a prompt variation
             prompt = random.choice(prompt_variations)
+            # prompt = generate_prompt(type_of_question, topicName, level_of_question, num_questions)
+            
 
             response = qa_chain.invoke({"query": prompt})
             result_text = response["result"]
@@ -165,16 +233,13 @@ def main():
 
         # Save output to JSON file
         output_data = {"questions_and_answers": valid_questions}
-        with open("output2.json", "w", encoding="utf-8") as json_file:
+        with open("output2.json", "w+", encoding="utf-8") as json_file:
             json.dump(output_data, json_file, indent=4, ensure_ascii=False)
 
-        # Print final JSON to be used by other processes
-        print(json.dumps(output_data))
 
     except Exception as e:
         print(json.dumps({"error": str(e)}))
-        
+
 if __name__ == "__main__":
     main()
 
-    

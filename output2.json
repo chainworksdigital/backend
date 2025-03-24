@@ -1,25 +1,87 @@
 {
     "questions_and_answers": [
         {
-            "question": "What should you do if someone is experiencing severe bleeding?",
+            "question": "In the event of an arc flash causing eye irritation, which of the following actions should be taken immediately?",
             "options": [
-                "A. Leave it until professional medical aid arrives.",
-                "B. Apply pressure to the wound and raise the injured part above the level of the body if possible.",
-                "C. Wash the wound with water immediately."
+                "A. Rub the affected eye vigorously",
+                "B. Apply a strong eye drop without consulting a doctor",
+                "C. Ignore the injury and continue working",
+                "D. Raise the injured part above the body level",
+                "E. Pressure on the wound to stop bleeding",
+                "F. Placeholder Option"
             ],
-            "correct_answer": "B. Apply pressure to the wound and raise the injured part above the level of the body if possible.",
+            "correct_answer": "D. Raise the injured part above the body level",
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
-            "question": "How should you handle a victim who has just received an electric shock?",
+            "question": "In case of an electric shock, which of the following actions should be performed to break the contact with the electric supply?",
             "options": [
-                "A. Pull the person off the conductor with your bare hands.",
-                "B. Leave the person till professional help arrives.",
-                "C. Use dry non-conducting materials such as a wooden bar, rope, or a scarf to remove the victim from contact with the live conductor."
+                "A. Directly touch the victim with bare hands",
+                "B. Apply first aid to burns before restoring breathing",
+                "C. Pull the person away using uninsulated tools or body parts",
+                "D. Stand on wet ground while breaking the contact",
+                "E. Do not disconnect the contact as soon as possible",
+                "F. Placeholder Option"
             ],
-            "correct_answer": "C. Use dry non-conducting materials such as a wooden bar, rope, or a scarf to remove the victim from contact with the live conductor.",
+            "correct_answer": "E. Do not disconnect the contact as soon as possible",
             "difficulty_level": "Easy",
+            "type": "MCQ"
+        },
+        {
+            "question": "What is the best immediate action in case of a severe bleeding from an abdominal stab wound?",
+            "options": [
+                "A. Apply pressure on the wound and cover it with a clean pad",
+                "B. Keep the injured part below the level of the body",
+                "C. Rub the affected area vigorously to stop the bleeding",
+                "D. Ignore the injury and wait for professional help",
+                "E. Bandage the wounded area without applying any pressure",
+                "F. Placeholder Option"
+            ],
+            "correct_answer": "A. Apply pressure on the wound and cover it with a clean pad",
+            "difficulty_level": "Easy",
+            "type": "MCQ"
+        },
+        {
+            "question": "In the event of an arc flash causing eye irritation, the appropriate first aid measure is to:",
+            "options": [
+                "A. Rub the eyes vigorously with bare hands",
+                "B. Apply a strong eye drop solution multiple times daily",
+                "C. Seek immediate medical attention from an eye specialist",
+                "D. Flush the eyes with water for several minutes",
+                "E. Use over-the-counter eye drops without consulting a doctor",
+                "F. Placeholder Option"
+            ],
+            "correct_answer": "C. Seek immediate medical attention from an eye specialist",
+            "difficulty_level": "Medium",
+            "type": "MCQ"
+        },
+        {
+            "question": "During first aid treatment, if a person has been electrocuted and is still in contact with the electric supply, the best course of action to break the contact is to:",
+            "options": [
+                "A. Immediately wrap hands in dry material and pull the person away from the source",
+                "B. Pour cold water on the affected area to reduce burn severity",
+                "C. Call for help and keep the patient warm until medical assistance arrives",
+                "D. Apply pressure to stop bleeding if the injury is severe",
+                "E. Stand on an insulating material and break the contact by pushing or pulling the person free",
+                "F. Placeholder Option"
+            ],
+            "correct_answer": "E. Stand on an insulating material and break the contact by pushing or pulling the person free",
+            "difficulty_level": "Medium",
+            "type": "MCQ"
+        },
+        {
+            "question": "During an arc flash incident, a worker sustains an eye injury due to the flying particles. The best immediate action for this situation is:",
+            "options": [
+                "A. Rub the affected eye vigorously.",
+                "B. Apply a strong chemical solution directly into the eye.",
+                "C. Consult with an eye doctor immediately and avoid touching the eye at all costs.",
+                "D. Use water to flush the eye continuously.",
+                "E. Apply ice packs on the affected eye to reduce swelling.",
+                "F. Placeholder Option"
+            ],
+            "correct_answer": "C. Consult with an eye doctor immediately and avoid touching the eye at all costs.",
+            "difficulty_level": "Hard",
             "type": "MCQ"
         }
     ]

@@ -68,7 +68,7 @@ router.post("/save", async (req, res) => {
       return res.status(500).json({ error: "Failed to save trade entry.", details: error.message });
     }
 
-    const scriptFile = aiModelPurpose === "External API" ? "script.py" : "script1.py";
+    const scriptFile = aiModelPurpose === "External API" ? "external.py" : "internal.py";
     const pythonScriptPath = path.join(__dirname, "..", "scripts", scriptFile);
 
     if (!fs.existsSync(pythonScriptPath)) {
