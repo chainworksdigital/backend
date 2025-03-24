@@ -75,7 +75,7 @@ router.post("/save", async (req, res) => {
       return res.status(500).json({ error: `Python script ${scriptFile} not found.` });
     }
 
-    console.log(`📌 Running: ${scriptFile}`);
+    console.log(`📌 Running python script successfully: ${scriptFile}`);
 
     const pythonProcess = spawn("python3", [pythonScriptPath]);
     pythonProcess.stdin.write(JSON.stringify(savedEntry));
@@ -183,7 +183,7 @@ router.post("/save", async (req, res) => {
 
           if (!updatedTrade) return res.status(500).json({ error: "Trade update failed." });
 
-          console.log("✅ Updated Trade Entry:", JSON.stringify(updatedTrade, null, 2));
+          console.log("✅ Updated Trade Entry from script:", JSON.stringify(updatedTrade, null, 2));
           
           res.status(201).json({ message: "Data saved and questions added successfully!", trade: updatedTrade });
 
