@@ -1,86 +1,129 @@
 {
     "questions_and_answers": [
         {
-            "question": "In the event of an arc flash causing eye irritation, which of the following actions should be taken immediately?",
+            "question": "What does DC stand for in terms of arc welding equipment, and what is its primary characteristic?",
             "options": [
-                "A. Rub the affected eye vigorously",
-                "B. Apply a strong eye drop without consulting a doctor",
-                "C. Ignore the injury and continue working",
-                "D. Raise the injured part above the body level",
-                "E. Pressure on the wound to stop bleeding",
-                "F. Placeholder Option"
+                "A. Direct Circuit, with current that changes directions frequently",
+                "B. Direct Current, with current that flows constantly in one direction",
+                "C. Direct Connection, with a stable and unchanging connection",
+                "D. Detailed Circuit, with precise control over the flow of current"
             ],
-            "correct_answer": "D. Raise the injured part above the body level",
+            "correct_answer": "B. Direct Current, with current that flows constantly in one direction",
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
-            "question": "In case of an electric shock, which of the following actions should be performed to break the contact with the electric supply?",
+            "question": "Looking at table 1, what is the appropriate nozzle size for a plate thickness of 12.0mm in AC welding?",
             "options": [
-                "A. Directly touch the victim with bare hands",
-                "B. Apply first aid to burns before restoring breathing",
-                "C. Pull the person away using uninsulated tools or body parts",
-                "D. Stand on wet ground while breaking the contact",
-                "E. Do not disconnect the contact as soon as possible",
-                "F. Placeholder Option"
+                "A. 35",
+                "B. 45",
+                "C. 55",
+                "D. 70"
             ],
-            "correct_answer": "E. Do not disconnect the contact as soon as possible",
+            "correct_answer": "B. 45",
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
-            "question": "What is the best immediate action in case of a severe bleeding from an abdominal stab wound?",
+            "question": "What is the purpose of a double-ended spanner in welding?",
             "options": [
-                "A. Apply pressure on the wound and cover it with a clean pad",
-                "B. Keep the injured part below the level of the body",
-                "C. Rub the affected area vigorously to stop the bleeding",
-                "D. Ignore the injury and wait for professional help",
-                "E. Bandage the wounded area without applying any pressure",
-                "F. Placeholder Option"
+                "A. To regulate the gas flow from the cylinder to the blowpipe",
+                "B. To clean the copper tip of the welding torch",
+                "C. To carry the welding current from the machine to the work and back",
+                "D. To loosen or tighten nuts and bolts, such as fixing the regulator onto the gas cylinder valves or fixing cable lugs to the arc welding machine output terminals"
             ],
-            "correct_answer": "A. Apply pressure on the wound and cover it with a clean pad",
+            "correct_answer": "D. To loosen or tighten nuts and bolts, such as fixing the regulator onto the gas cylinder valves or fixing cable lugs to the arc welding machine output terminals",
             "difficulty_level": "Easy",
             "type": "MCQ"
         },
         {
-            "question": "In the event of an arc flash causing eye irritation, the appropriate first aid measure is to:",
+            "question": "What material are welding torch tips typically made from, and why must they be handled carefully?",
             "options": [
-                "A. Rub the eyes vigorously with bare hands",
-                "B. Apply a strong eye drop solution multiple times daily",
-                "C. Seek immediate medical attention from an eye specialist",
-                "D. Flush the eyes with water for several minutes",
-                "E. Use over-the-counter eye drops without consulting a doctor",
-                "F. Placeholder Option"
+                "A. Iron, because they easily rust",
+                "B. Copper, because they can be damaged by rough handling",
+                "C. Stainless Steel, because they can easily overheat",
+                "D. Aluminum, because it can melt at high temperatures"
             ],
-            "correct_answer": "C. Seek immediate medical attention from an eye specialist",
+            "correct_answer": "B. Copper, because they can be damaged by rough handling",
+            "difficulty_level": "Easy",
+            "type": "MCQ"
+        },
+        {
+            "question": "What does the number 6096, a random element, signify in the welding process?",
+            "options": [
+                "A. The maximum temperature achievable by the welding torch in degrees Celsius",
+                "B. The thickness of the metal to be welded in millimeters",
+                "C. The voltage required for an arc to be formed during welding",
+                "D. It doesn't signify anything in the welding process"
+            ],
+            "correct_answer": "D. It doesn't signify anything in the welding process",
+            "difficulty_level": "Easy",
+            "type": "MCQ"
+        },
+        {
+            "question": "What is the purpose of a double-ended spanner in welding practice?",
+            "options": [
+                "A. To regulate the flow of gas",
+                "B. To clean the welding tip",
+                "C. To tighten nuts and bolts on various welding equipment",
+                "D. To carry the welding current from the machine to the work",
+                "E. To adjust the size of the welding nozzle"
+            ],
+            "correct_answer": "C. To tighten nuts and bolts on various welding equipment",
             "difficulty_level": "Medium",
             "type": "MCQ"
         },
         {
-            "question": "During first aid treatment, if a person has been electrocuted and is still in contact with the electric supply, the best course of action to break the contact is to:",
+            "question": "How often does alternating current (AC) change or reverse its direction of flow of current, if it is 50 cycles/sec?",
             "options": [
-                "A. Immediately wrap hands in dry material and pull the person away from the source",
-                "B. Pour cold water on the affected area to reduce burn severity",
-                "C. Call for help and keep the patient warm until medical assistance arrives",
-                "D. Apply pressure to stop bleeding if the injury is severe",
-                "E. Stand on an insulating material and break the contact by pushing or pulling the person free",
-                "F. Placeholder Option"
+                "A. 10 times per second",
+                "B. 20 times per second",
+                "C. 30 times per second",
+                "D. 50 times per second",
+                "E. 60 times per second"
             ],
-            "correct_answer": "E. Stand on an insulating material and break the contact by pushing or pulling the person free",
+            "correct_answer": "D. 50 times per second",
             "difficulty_level": "Medium",
             "type": "MCQ"
         },
         {
-            "question": "During an arc flash incident, a worker sustains an eye injury due to the flying particles. The best immediate action for this situation is:",
+            "question": "What are the possible outcomes of loose joints or bad contacts in welding cables?",
             "options": [
-                "A. Rub the affected eye vigorously.",
-                "B. Apply a strong chemical solution directly into the eye.",
-                "C. Consult with an eye doctor immediately and avoid touching the eye at all costs.",
-                "D. Use water to flush the eye continuously.",
-                "E. Apply ice packs on the affected eye to reduce swelling.",
-                "F. Placeholder Option"
+                "A. Reduced welding power",
+                "B. Increase in welding speed",
+                "C. Overheating of the cables",
+                "D. Reduced need for maintenance",
+                "E. Instantaneous current flow"
             ],
-            "correct_answer": "C. Consult with an eye doctor immediately and avoid touching the eye at all costs.",
+            "correct_answer": "C. Overheating of the cables",
+            "difficulty_level": "Medium",
+            "type": "MCQ"
+        },
+        {
+            "question": "How does the nozzle size vary in relation to the thickness of the plates to be welded, according to table 1?",
+            "options": [
+                "A. The thinner the plate, the larger the nozzle size",
+                "B. The thicker the plate, the smaller the nozzle size",
+                "C. The nozzle size doesn't depend on the plate thickness",
+                "D. The nozzle size is the same regardless of plate thickness",
+                "E. The nozzle size is half the plate thickness",
+                "F. The thicker the plate, the larger the nozzle size"
+            ],
+            "correct_answer": "F. The thicker the plate, the larger the nozzle size",
+            "difficulty_level": "Hard",
+            "type": "MCQ"
+        },
+        {
+            "question": "When it comes to welding cables, which of the following statements are true according to the context 6419?",
+            "options": [
+                "A. The lead from the welding machine to the electrode-holder is called the earth cable",
+                "B. The lead from the work through the earth clamp to the welding machine is called electrode cable",
+                "C. Welding cables are made of super flexible rubber insulation, having fine copper wires and woven fabric reinforcing layers",
+                "D. Loose joints or bad contacts decrease the heating of the cables",
+                "E. The same size welding cables must be used for the electrode and the earth clamp",
+                "F. Cable length has no effect on the size to be used"
+            ],
+            "correct_answer": "C. Welding cables are made of super flexible rubber insulation, having fine copper wires and woven fabric reinforcing layers",
             "difficulty_level": "Hard",
             "type": "MCQ"
         }
