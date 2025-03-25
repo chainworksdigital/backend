@@ -79,39 +79,39 @@ def parse_qa_output(result_text, level_of_question, num_options):
 def main():
     """Processes trade data and generates MCQ questions dynamically."""
     try:
-        # trade_data = json.loads(sys.stdin.read())
-        # topicName = trade_data["modules"][0]["topics"][0]["name"]
-        # levels = trade_data["modules"][0]["topics"][0]["levels"]
+        trade_data = json.loads(sys.stdin.read())
+        topicName = trade_data["modules"][0]["topics"][0]["name"]
+        levels = trade_data["modules"][0]["topics"][0]["levels"]
 
-        # md_path = f"{MD_FOLDER}/{topicName.replace(' ', '_')}.md"
-        topicName="Safety_Precautions_in_SMAW,_OAW_and_OAGC.md"
-        levels= [
-            {
-              "level": "L1",
-              "numQuestions": 3,
-              "questions": [],
-              "type": "MCQ",
-              "mcqOptions": 6,
-              "_id": "67de895421162a4f78c122a4"
-            },
-            {
-              "level": "L2",
-              "numQuestions": 2,
-              "questions": [],
-              "type": "MCQ",
-              "mcqOptions": 6,
-              "_id": "67de895421162a4f78c122a5"
-            },
-            {
-              "level": "L3",
-              "numQuestions": 1,
-              "questions": [],
-              "type": "MCQ",
-              "mcqOptions": 6,
-              "_id": "67de895421162a4f78c122a6"
-            }
-          ]
-        md_path  ="/home/uttara/Documents/git/backend/markdown_files/First_Aid.md"
+        md_path = f"{MD_FOLDER}/{topicName.replace(' ', '_')}.md"
+        # topicName="Safety_Precautions_in_SMAW,_OAW_and_OAGC.md"
+        # levels= [
+        #     {
+        #       "level": "L1",
+        #       "numQuestions": 3,
+        #       "questions": [],
+        #       "type": "MCQ",
+        #       "mcqOptions": 6,
+        #       "_id": "67de895421162a4f78c122a4"
+        #     },
+        #     {
+        #       "level": "L2",
+        #       "numQuestions": 2,
+        #       "questions": [],
+        #       "type": "MCQ",
+        #       "mcqOptions": 6,
+        #       "_id": "67de895421162a4f78c122a5"
+        #     },
+        #     {
+        #       "level": "L3",
+        #       "numQuestions": 1,
+        #       "questions": [],
+        #       "type": "MCQ",
+        #       "mcqOptions": 6,
+        #       "_id": "67de895421162a4f78c122a6"
+        #     }
+        #   ]
+        # md_path  ="/home/uttara/Documents/git/backend/markdown_files/First_Aid.md"
         
 
         if not os.path.exists(md_path):
